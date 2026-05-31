@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coca-Cola - Taste The Feeling</title>
+    <link rel="preload" as="image" href="cinematic-frames/ezgif-frame-376.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { background: #0A0A0A; }
+
+        :root {
+            --red:   #F40009;
+            --black: #0A0A0A;
+            --white: #FFF5E4;
+            --amber: #C8760A;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ── LOADING ── */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 1s ease-out;
+        }
+        .loading-screen.hidden { opacity: 0; pointer-events: none; }
+
+        .loading-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 700;
+            color: var(--red);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            animation: redPulse 2s ease-in-out infinite;
+            text-shadow: 0 0 60px rgba(244,0,9,0.6);
+        }
+
+        .loading-tagline {
+            font-size: 0.75rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(255,245,228,0.5);
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+
+        @keyframes redPulse {
+            0%, 100% { text-shadow: 0 0 60px rgba(244,0,9,0.6); }
+            50%       { text-shadow: 0 0 100px rgba(244,0,9,0.9); }
+        }
+
+        .loading-bar-container {
+            width: 320px;
+            max-width: 80vw;
+            height: 3px;
+            background: rgba(244,0,9,0.15);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--red), var(--amber), var(--red));
+            background-size: 200% 100%;
+            transition: width 0.3s ease-out;
+            animation: barShimmer 2s linear infinite;
+            box-shadow: 0 0 12px var(--red);
+        }
+        @keyframes barShimmer {
+            0%   { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .loading-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(244,0,9,0.7);
+            font-weight: 600;
+        }
+
+        /* ── PROGRESS BAR ── */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--red), var(--amber));
+            width: 0%;
+            z-index: 1000;
+            box-shadow: 0 0 14px var(--red);
+            transition: width 0.1s ease-out;
+        }
+
+        /* ── OVERLAYS ── */
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.55) 100%);
+            pointer-events: none;
+            z-index: 100;
+        }
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii45Ii8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+');
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 101;
+            mix-blend-mode: overlay;
+        }
+
+        /* ── HERO ── */
+        .hero-wrapper {
+            position: relative;
+            height: 700vh;
+            background: var(--black);
+        }
+        #scroll-container {
+            position: relative;
+        }
+        .hero-canvas-container {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--black);
+        }
+        #cinematic-canvas {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; height: 100%;
+        }
+
+        /* Watermark cover */
+        .watermark-cover {
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 250px; height: 100px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 100%);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        /* Hero veil */
+        .hero-veil {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 45%, rgba(0,0,0,0.65) 100%),
+                url('cinematic-frames/ezgif-frame-376.jpg') center / cover no-repeat;
+            z-index: 199;
+            pointer-events: none;
+        }
+
+        /* ── HERO OVERLAYS ── */
+        .hero-overlay {
+            position: absolute;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            background: rgba(10,10,10,0.82);
+            border: 1px solid rgba(244,0,9,0.2);
+            padding: 2.5rem 3rem;
+            width: clamp(320px, 38vw, 520px);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .overlay-left {
+            left: 8%;
+            border-left: 4px solid var(--red);
+            text-align: left;
+        }
+        .overlay-right {
+            right: 8%;
+            border-right: 4px solid var(--amber);
+            border-left: none;
+            text-align: right;
+        }
+        #heroOverlay1 {
+            pointer-events: all;
+            border-left: none;
+            border-top: 2px solid rgba(244,0,9,0.5);
+            overflow: hidden;
+        }
+        #heroOverlay1::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -100%;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red), var(--amber), transparent);
+            animation: borderSlide 3s linear infinite;
+        }
+        @keyframes borderSlide {
+            0%   { left: -100%; }
+            100% { left: 100%; }
+        }
+        .hero-overlay h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2rem, 5.5vw, 5rem);
+            color: var(--red);
+            text-shadow: 0 0 80px rgba(244,0,9,0.7), 0 20px 50px rgba(0,0,0,0.8);
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+            white-space: nowrap;
+        }
+        .hero-overlay h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: clamp(2rem, 5.5vw, 5rem);
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 40px rgba(244,0,9,0.35);
+        }
+        .hero-overlay h2 span { color: var(--red); }
+        .overlay-line {
+            width: 120px; height: 2px;
+            background: linear-gradient(90deg, var(--red), transparent);
+            margin: 1rem 0;
+            box-shadow: 0 0 8px rgba(244,0,9,0.5);
+        }
+        .overlay-right .overlay-line {
+            background: linear-gradient(90deg, transparent, var(--amber));
+            margin-left: auto;
+        }
+        .hero-overlay p {
+            font-size: clamp(0.95rem, 2vw, 1.3rem);
+            color: rgba(255,245,228,0.85);
+            line-height: 1.75;
+            font-weight: 300;
+        }
+        .overlay-sub {
+            font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+        .overlay-tag {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            font-style: italic;
+            color: var(--amber);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(200,118,10,0.4);
+        }
+        .overlay-btns { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .overlay-right .overlay-btns { justify-content: flex-end; }
+
+        .red-line {
+            width: 160px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red), transparent);
+            margin: 1.5rem auto;
+            box-shadow: 0 0 12px rgba(244,0,9,0.6);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CTAs */
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            pointer-events: all;
+        }
+        .cta-btn {
+            padding: 1.4rem 4rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.22,1,0.36,1);
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            transition: left 0.5s cubic-bezier(0.22,1,0.36,1);
+            z-index: -1;
+        }
+        .cta-btn:hover::before { left: 0; }
+
+        .cta-btn-primary {
+            background: var(--red);
+            color: var(--white);
+            border: 2px solid var(--red);
+            box-shadow: 0 0 30px rgba(244,0,9,0.5);
+        }
+        .cta-btn-primary::before { background: #b00007; }
+        .cta-btn-primary:hover { box-shadow: 0 0 50px rgba(244,0,9,0.8); }
+
+        .cta-btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255,245,228,0.4);
+        }
+        .cta-btn-secondary::before { background: rgba(255,245,228,0.1); }
+        .cta-btn-secondary:hover { border-color: var(--white); }
+
+
+        /* ── SCROLL INDICATOR ── */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 3rem; left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.5s forwards;
+            transition: opacity 0.5s;
+        }
+        .scroll-indicator.hidden { opacity: 0; }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .scroll-text {
+            font-size: 0.62rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--red);
+            font-weight: 700;
+        }
+        .scroll-arrow {
+            width: 28px; height: 44px;
+            border: 2px solid var(--red);
+            border-radius: 14px;
+            position: relative;
+            box-shadow: 0 0 14px rgba(244,0,9,0.4);
+        }
+        .scroll-arrow::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 50%;
+            transform: translateX(-50%);
+            width: 3px; height: 10px;
+            background: var(--amber);
+            border-radius: 2px;
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+        @keyframes scrollDown {
+            0%   { top: 10px; opacity: 0; }
+            30%  { opacity: 1; }
+            60%  { opacity: 1; }
+            100% { top: 28px; opacity: 0; }
+        }
+
+        /* ── LIGHT SECTION VARS ── */
+        :root {
+            --light:      #FFFFFF;
+            --light-alt:  #F5F5F5;
+            --text:       #1A1A1A;
+            --text-muted: #666666;
+            --border:     #E0E0E0;
+        }
+
+        /* ── STATEMENT SECTION ── */
+        .statement-section {
+            background: rgba(255,255,255,0.50);
+            padding: 7rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+        .statement-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 4rem 5rem;
+        }
+        .statement-bar { width: 60px; height: 3px; background: var(--red); }
+        .statement-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 3vw, 2.5rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .btn-red {
+            display: inline-block;
+            background: var(--red);
+            color: #fff;
+            padding: 1rem 2.8rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-red:hover { background: #b00007; box-shadow: 0 4px 20px rgba(244,0,9,0.3); }
+
+        /* ── FEATURED STORIES ── */
+        .featured-section { background: rgba(255,255,255,0.50); padding: 6rem 0; position: relative; }
+        .featured-inner { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
+        .featured-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+            padding-left: 1rem;
+            border-left: 4px solid var(--red);
+        }
+        .carousel-wrapper { position: relative; display: flex; align-items: center; gap: 1rem; }
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            flex: 1;
+            padding-bottom: 0.5rem;
+        }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .feature-card {
+            flex: 0 0 calc(33.333% - 1rem);
+            min-width: 320px;
+            min-height: 440px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            scroll-snap-align: start;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .feature-card-img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+        .feature-card:hover .feature-card-img { transform: scale(1.05); }
+        .feature-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.2) 60%, transparent 100%);
+        }
+        .feature-card-content {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 2rem; z-index: 2;
+        }
+        .feature-tag {
+            display: block;
+            font-size: 0.62rem; letter-spacing: 0.25em;
+            text-transform: uppercase; color: var(--red); font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        .feature-card-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 1.8vw, 1.35rem);
+            font-weight: 700; color: #fff; line-height: 1.35;
+            margin-bottom: 1.25rem;
+        }
+        .feature-cta {
+            display: inline-block; background: var(--red); color: #fff;
+            padding: 0.6rem 1.6rem; font-size: 0.72rem; font-weight: 700;
+            text-decoration: none; text-transform: uppercase; letter-spacing: 0.15em;
+            transition: background 0.3s;
+        }
+        .feature-cta:hover { background: #b00007; }
+        .carousel-btn {
+            flex-shrink: 0; width: 46px; height: 46px;
+            background: var(--red); border: none; color: #fff;
+            font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s; z-index: 5;
+        }
+        .carousel-btn:hover { background: #b00007; }
+
+        /* ── NEWS SECTION ── */
+        .news-section { background: rgba(255,255,255,0.50); padding: 7rem 2rem; overflow: hidden; position: relative; }
+        .news-inner { max-width: 100%; margin: 0 auto; }
+        .news-header {
+            display: flex; justify-content: space-between;
+            align-items: flex-end; margin-bottom: 3rem;
+            gap: 2rem; flex-wrap: wrap;
+        }
+        .news-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700; color: var(--text); line-height: 1.2;
+        }
+        .news-header h2 span { color: var(--red); }
+        .link-red {
+            font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--red); text-decoration: none;
+            white-space: nowrap; transition: opacity 0.3s;
+        }
+        .link-red:hover { opacity: 0.7; }
+        .news-portrait-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: clamp(0.4rem, 0.6vw, 0.85rem);
+            align-items: center;
+        }
+        .news-portrait-card {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+        }
+        .news-portrait-card:nth-child(1) { height: clamp(180px, 22vw, 360px); }
+        .news-portrait-card:nth-child(2) { height: clamp(250px, 30vw, 480px); }
+        .news-portrait-card:nth-child(3) { height: clamp(310px, 38vw, 580px); }
+        .news-portrait-card:nth-child(4) { height: clamp(250px, 30vw, 480px); }
+        .news-portrait-card:nth-child(5) { height: clamp(180px, 22vw, 360px); }
+        .news-portrait-card:hover { transform: translateY(-8px); }
+        .news-portrait-img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.65s ease;
+        }
+        .news-portrait-card:hover .news-portrait-img { transform: scale(1.05); }
+        .news-portrait-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.15) 55%, transparent 100%);
+        }
+        .news-portrait-content {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 1.5rem; z-index: 2;
+        }
+        .news-cat {
+            display: block; font-size: 0.6rem; letter-spacing: 0.22em;
+            text-transform: uppercase; color: var(--red); font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .news-portrait-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            font-weight: 700; color: #fff; line-height: 1.45;
+        }
+
+        /* ── BRANDS SHOWCASE ── */
+        .brands-showcase-section {
+            background: rgba(255,255,255,0.50);
+            padding: 7rem 2rem; text-align: center;
+            position: relative;
+        }
+        .brands-showcase-inner {
+            max-width: 1100px; margin: 0 auto;
+        }
+        .brands-showcase-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700; color: var(--text); margin-bottom: 0.75rem;
+        }
+        .brands-showcase-heading span { color: var(--red); }
+        .brands-showcase-sub {
+            font-size: 1rem; color: var(--text-muted);
+            margin-bottom: 3.5rem; font-weight: 300; line-height: 1.7;
+        }
+        .brands-tile-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .brand-tile {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.75rem 1rem;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.6rem;
+            transition: all 0.3s ease;
+        }
+        .brand-tile:hover {
+            background: #EFEFEF;
+            border-color: #CCCCCC;
+            transform: translateY(-3px);
+        }
+        .brand-tile span {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; font-weight: 700; color: var(--text);
+        }
+        .brand-tile a {
+            font-size: 0.68rem; letter-spacing: 0.15em;
+            text-transform: uppercase; font-weight: 700;
+            color: var(--red); text-decoration: none; transition: opacity 0.2s;
+        }
+        .brand-tile a:hover { opacity: 0.7; }
+
+        /* ── CAREERS SECTION ── */
+        .careers-section {
+            background: rgba(255,255,255,0.50);
+            padding: 7rem 2rem;
+            position: relative;
+        }
+        .careers-inner { max-width: 1200px; margin: 0 auto; }
+        .careers-header {
+            text-align: center; margin-bottom: 4rem;
+            padding: 3.5rem 4rem;
+        }
+        .careers-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700; color: var(--text); margin-bottom: 1rem;
+        }
+        .careers-header h2 span { color: var(--red); }
+        .careers-header p {
+            font-size: 1.05rem; color: var(--text-muted);
+            max-width: 680px; margin: 0 auto;
+            line-height: 1.8; font-weight: 300;
+        }
+        .careers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .career-card {
+            position: relative; min-height: 380px;
+            overflow: hidden; border-radius: 20px;
+            background-size: cover; background-position: center;
+        }
+        .career-card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.15) 60%, transparent 100%);
+            transition: background 0.4s;
+        }
+        .career-card:hover .career-card-overlay {
+            background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.35) 60%, rgba(10,10,10,0.1) 100%);
+        }
+        .career-card-content {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 2rem; z-index: 2;
+        }
+        .career-card-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem; font-weight: 700;
+            color: #fff; margin-bottom: 0.5rem;
+        }
+        .career-card-content p {
+            font-size: 0.88rem; color: rgba(255,255,255,0.7);
+            font-weight: 300; line-height: 1.65; margin-bottom: 1rem;
+        }
+        .career-link {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--red); text-decoration: none; transition: color 0.3s;
+        }
+        .career-link:hover { color: #fff; }
+
+        /* ── FOOTER ── */
+        .site-footer { background: #111; padding: 5rem 2rem 2rem; }
+        .footer-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 4rem; padding-bottom: 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .footer-logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.4rem; color: var(--red);
+            line-height: 1.2; margin-bottom: 0.75rem;
+        }
+        .footer-copy {
+            font-size: 0.78rem; color: rgba(255,255,255,0.35);
+            line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem;
+        }
+        .footer-social { display: flex; gap: 0.75rem; }
+        .social-icon {
+            width: 36px; height: 36px;
+            border: 1px solid rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.45); text-decoration: none;
+            transition: all 0.3s;
+        }
+        .social-icon:hover { border-color: var(--red); color: var(--red); }
+        .footer-col h4 {
+            font-size: 0.68rem; letter-spacing: 0.28em;
+            text-transform: uppercase; color: #fff;
+            font-weight: 700; margin-bottom: 1.5rem;
+        }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li { margin-bottom: 0.85rem; }
+        .footer-col ul a {
+            font-size: 0.88rem; color: rgba(255,255,255,0.4);
+            text-decoration: none; font-weight: 300; transition: color 0.3s;
+        }
+        .footer-col ul a:hover { color: var(--red); }
+        .footer-bottom {
+            max-width: 1100px; margin: 2rem auto 0;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 1rem;
+        }
+        .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .footer-legal a {
+            font-size: 0.7rem; color: rgba(255,255,255,0.22);
+            text-decoration: none; transition: color 0.3s;
+        }
+        .footer-legal a:hover { color: var(--red); }
+        .footer-bottom > span { font-size: 0.7rem; color: rgba(255,255,255,0.22); }
+        .section-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--red);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .section-header { text-align: center; margin-bottom: 5rem; }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+        .section-header h2 span { color: var(--red); }
+        .section-sub {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: rgba(255,245,228,0.6);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.85;
+        }
+
+        /* ── TEXT REVEAL CLIPS ── */
+        .clip-wrap  { display: inline-block; overflow: hidden; vertical-align: bottom; }
+        .clip-inner { display: inline-block; }
+
+        /* ── FIXED ORB BACKGROUND ── */
+        #orb-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: #F7F7F7;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            mix-blend-mode: multiply;
+            will-change: transform;
+        }
+        .orb-r { background: rgba(244, 0, 9, 0.45); }
+        .orb-a { background: rgba(200, 118, 10, 0.42); }
+        .orb-w { background: rgba(255, 160, 80, 0.38); }
+        .orb-y { background: rgba(235, 227, 202, 0.65); }
+
+        @keyframes orbDrift1 {
+            0%   { transform: translate(0, 0); }
+            25%  { transform: translate(28vw, -18vh); }
+            50%  { transform: translate(8vw, 32vh); }
+            75%  { transform: translate(-22vw, 12vh); }
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes orbDrift2 {
+            0%   { transform: translate(0, 0); }
+            33%  { transform: translate(-26vw, 20vh); }
+            66%  { transform: translate(18vw, -28vh); }
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes orbDrift3 {
+            0%   { transform: translate(0, 0); }
+            40%  { transform: translate(20vw, 25vh); }
+            80%  { transform: translate(-32vw, -15vh); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .footer-inner { grid-template-columns: 1fr 1fr; gap: 3rem; }
+            .brands-tile-grid { grid-template-columns: repeat(3, 1fr); }
+            .careers-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-wrapper { height: 600vh; }
+            .hero-content-block { width: 90%; padding: 2.5rem 2rem; }
+            .story-text {
+                left: 5% !important; right: 5% !important;
+                transform: none !important; text-align: center !important;
+                max-width: 90%; border-left: none !important;
+                border-right: none !important; border-bottom: 4px solid var(--red);
+            }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .cta-btn { width: 100%; max-width: 300px; }
+            .feature-card { flex: 0 0 85vw; min-height: 360px; }
+            .news-portrait-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+            .news-portrait-card { border-radius: 12px; }
+            .news-portrait-card:nth-child(1),
+            .news-portrait-card:nth-child(2),
+            .news-portrait-card:nth-child(3),
+            .news-portrait-card:nth-child(4),
+            .news-portrait-card:nth-child(5) { height: clamp(180px, 45vw, 300px); }
+            .brands-tile-grid { grid-template-columns: repeat(2, 1fr); }
+            .careers-grid { grid-template-columns: 1fr; }
+            .career-card { min-height: 300px; }
+            .news-header { flex-direction: column; align-items: flex-start; }
+            .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+            .footer-bottom { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">Coca-Cola</div>
+        <div class="loading-tagline">Taste The Feeling</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <div class="loading-text" id="loadingText">LOADING... 0%</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Single fixed orb background — sits behind all sections -->
+    <div id="orb-bg">
+        <span class="orb orb-r" style="width:600px;height:600px;top:5vh;left:5vw;   animation:orbDrift1 22s ease-in-out infinite -4s;"></span>
+        <span class="orb orb-a" style="width:520px;height:520px;top:30vh;right:8vw; animation:orbDrift2 28s ease-in-out infinite -10s;"></span>
+        <span class="orb orb-y" style="width:500px;height:500px;bottom:10vh;left:25vw;animation:orbDrift3 19s ease-in-out infinite -6s;"></span>
+        <span class="orb orb-y" style="width:420px;height:420px;bottom:5vh;right:5vw;animation:orbDrift2 24s ease-in-out infinite -14s;"></span>
+        <span class="orb orb-a" style="width:340px;height:340px;top:55vh;left:50vw; animation:orbDrift1 17s ease-in-out infinite -3s;"></span>
+    </div>
+
+    <!-- Grain overlay (fixed, page-wide film texture) -->
+    <div class="grain-overlay"></div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <span class="scroll-text">Scroll</span>
+        <div class="scroll-arrow"></div>
+    </div>
+
+    <div id="scroll-container">
+
+    <!-- Hero -->
+    <div class="hero-wrapper" data-scroll-section>
+        <div class="hero-canvas-container">
+            <canvas id="cinematic-canvas"></canvas>
+            <div class="watermark-cover"></div>
+            <div class="vignette"></div>
+            <div class="hero-veil"></div>
+
+            <!-- Overlay 1: LEFT — main brand (enters from bottom-left) -->
+            <div class="hero-overlay overlay-left" id="heroOverlay1">
+                <h1>Coca&#8209;Cola</h1>
+                <div class="overlay-line"></div>
+                <p class="overlay-sub">Open Happiness</p>
+                <p class="overlay-tag">Taste The Feeling</p>
+            </div>
+
+            <!-- Overlay 2: RIGHT — pure refreshment (enters from bottom-right) -->
+            <div class="hero-overlay overlay-right" id="heroOverlay2">
+                <h2>Pure<br><span>Refreshment</span></h2>
+                <div class="overlay-line"></div>
+                <p>Every sip bursting with<br>the iconic taste you love</p>
+            </div>
+
+            <!-- Overlay 3: LEFT — perfect splash (enters from bottom-left) -->
+            <div class="hero-overlay overlay-left" id="heroOverlay3">
+                <h2>The Perfect<br><span>Splash</span></h2>
+                <div class="overlay-line"></div>
+                <p>Ice cold. Perfectly crafted.<br>Made to be shared</p>
+            </div>
+
+            <!-- Overlay 4: RIGHT — share the feeling (enters from bottom-right) -->
+            <div class="hero-overlay overlay-right" id="heroOverlay4">
+                <h2>Share The<br><span>Feeling</span></h2>
+                <div class="overlay-line"></div>
+                <p>Moments made better<br>with every bottle</p>
+            </div>
+
+            <!-- Overlay 5: LEFT — heritage (enters from bottom-left) -->
+            <div class="hero-overlay overlay-left" id="heroOverlay5">
+                <h2>Since<br><span>1886</span></h2>
+                <div class="overlay-line"></div>
+                <p>The world's most<br>beloved refreshment</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Statement Section -->
+    <section class="statement-section" data-scroll-section>
+        <div class="statement-inner">
+            <div class="statement-bar"></div>
+            <p class="statement-quote">"We're refreshing what it means to make a difference: one sip, story and impact at a time."</p>
+            <a href="#" class="btn-red">Discover Our Company</a>
+        </div>
+    </section>
+
+    <!-- Featured Stories -->
+    <section class="featured-section" data-scroll-section>
+        <div class="featured-inner">
+            <h2 class="featured-heading">Featured Stories</h2>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn" id="prevBtn" aria-label="Previous">&#8592;</button>
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="feature-card">
+                        <img src="cinematic-frames/ezgif-frame-050.jpg" class="feature-card-img" alt="">
+                        <div class="feature-card-overlay"></div>
+                        <div class="feature-card-content">
+                            <span class="feature-tag">Partnership</span>
+                            <h3>Gearing Up for America's 250th as an America250 Signature Partner</h3>
+                            <a href="#" class="feature-cta">Explore</a>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <img src="cinematic-frames/ezgif-frame-150.jpg" class="feature-card-img" alt="">
+                        <div class="feature-card-overlay"></div>
+                        <div class="feature-card-content">
+                            <span class="feature-tag">Brands</span>
+                            <h3>ACHIEVEMENT UNLOCKED: Wanta Fanta Upgrade</h3>
+                            <a href="#" class="feature-cta">Press Start</a>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <img src="cinematic-frames/ezgif-frame-250.jpg" class="feature-card-img" alt="">
+                        <div class="feature-card-overlay"></div>
+                        <div class="feature-card-content">
+                            <span class="feature-tag">Innovation</span>
+                            <h3>Unveiling the Next Generation of Beverage Dispensing</h3>
+                            <a href="#" class="feature-cta">Explore</a>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <img src="cinematic-frames/ezgif-frame-320.jpg" class="feature-card-img" alt="">
+                        <div class="feature-card-overlay"></div>
+                        <div class="feature-card-content">
+                            <span class="feature-tag">Sports</span>
+                            <h3>FIFA World Cup™ Trophy Tour by Coca‑Cola is Here!</h3>
+                            <a href="#" class="feature-cta">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn" id="nextBtn" aria-label="Next">&#8594;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section" data-scroll-section>
+        <div class="news-inner">
+            <div class="news-header">
+                <h2>Dive Into Our<br><span>Latest News</span></h2>
+                <a href="#" class="link-red">See All News &rarr;</a>
+            </div>
+            <div class="news-portrait-grid">
+                <a class="news-portrait-card" href="#">
+                    <img src="images/new-1.webp" class="news-portrait-img" alt="">
+                    <div class="news-portrait-overlay"></div>
+                    <div class="news-portrait-content">
+                        <span class="news-cat">News &middot; Brands</span>
+                        <h3>Coca‑Cola Unites Iconic Foodservice Partners in "And a Coke" Campaign</h3>
+                    </div>
+                </a>
+                <a class="news-portrait-card" href="#">
+                    <img src="images/new-2.webp" class="news-portrait-img" alt="">
+                    <div class="news-portrait-overlay"></div>
+                    <div class="news-portrait-content">
+                        <span class="news-cat">Press Release &middot; Company</span>
+                        <h3>The Coca‑Cola Company Announces Q1 2026 Earnings Release Timing</h3>
+                    </div>
+                </a>
+                <a class="news-portrait-card" href="#">
+                    <img src="images/new-3.webp" class="news-portrait-img" alt="">
+                    <div class="news-portrait-overlay"></div>
+                    <div class="news-portrait-content">
+                        <span class="news-cat">News &middot; Company</span>
+                        <h3>Atlanta's Litter Gitter Catches Creek Trash So It Can Be Recycled</h3>
+                    </div>
+                </a>
+                <a class="news-portrait-card" href="#">
+                    <img src="images/new-4.webp" class="news-portrait-img" alt="">
+                    <div class="news-portrait-overlay"></div>
+                    <div class="news-portrait-content">
+                        <span class="news-cat">Press Release &middot; Brands</span>
+                        <h3>Powerade® Unveils "Power Your Fate" for FIFA World Cup 26™</h3>
+                    </div>
+                </a>
+                <a class="news-portrait-card" href="#">
+                    <img src="images/new-5.webp" class="news-portrait-img" alt="">
+                    <div class="news-portrait-overlay"></div>
+                    <div class="news-portrait-content">
+                        <span class="news-cat">News &middot; Brands</span>
+                        <h3>Coca‑Cola and Panini America Partner for Iconic FIFA World Cup™ Ritual</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands Showcase -->
+    <section class="brands-showcase-section" data-scroll-section>
+        <div class="brands-showcase-inner">
+            <h2 class="brands-showcase-heading">Say Hello to <span>the Team</span></h2>
+            <p class="brands-showcase-sub">We meet you at any point in your day with the drinks you love.</p>
+            <div class="brands-tile-grid">
+                <div class="brand-tile"><span>Coca&#8209;Cola®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Fanta®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Sprite®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Diet Coke®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Powerade®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Dasani®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>smartwater®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Minute Maid®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Simply®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Costa Coffee®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Gold Peak®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>BODYARMOR®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>fairlife®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Topo Chico®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>vitaminwater®</span><a href="#">Explore</a></div>
+                <div class="brand-tile"><span>Schweppes®</span><a href="#">Explore</a></div>
+            </div>
+            <a href="#" class="btn-red" style="margin-top:3rem;display:inline-block;">Meet the Rest</a>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section class="careers-section" data-scroll-section>
+        <div class="careers-inner">
+            <div class="careers-header">
+                <h2>Find Your <span>Future Here</span></h2>
+                <p>We're a team, empowering individuals to grow and work together to make a lasting impact on communities and build a better shared future.</p>
+            </div>
+            <div class="careers-grid">
+                <div class="career-card" data-scroll data-scroll-speed="-2" style="background-image:url('cinematic-frames/ezgif-frame-100.jpg')">
+                    <div class="career-card-overlay"></div>
+                    <div class="career-card-content">
+                        <h3>Work With Us</h3>
+                        <p>Explore open roles across the globe</p>
+                        <a href="#" class="career-link">Browse Jobs &rarr;</a>
+                    </div>
+                </div>
+                <div class="career-card" data-scroll data-scroll-speed="-3" style="background-image:url('cinematic-frames/ezgif-frame-200.jpg')">
+                    <div class="career-card-overlay"></div>
+                    <div class="career-card-content">
+                        <h3>Life at Coca&#8209;Cola</h3>
+                        <p>Discover our culture, benefits &amp; career development</p>
+                        <a href="#" class="career-link">Learn More &rarr;</a>
+                    </div>
+                </div>
+                <div class="career-card" data-scroll data-scroll-speed="-2" style="background-image:url('cinematic-frames/ezgif-frame-300.jpg')">
+                    <div class="career-card-overlay"></div>
+                    <div class="career-card-content">
+                        <h3>Early Careers</h3>
+                        <p>Start your journey with internships and graduate programs</p>
+                        <a href="#" class="career-link">Get Started &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ═══ REMOTION SCROLL SECTION ═══ -->
+    <div id="remotion-section"></div>
+
+    <!-- Footer -->
+    <footer class="site-footer" data-scroll-section>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-logo">Coca&#8209;Cola</div>
+                <p class="footer-copy">© 2025 The Coca-Cola Company.<br>All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Instagram">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="YouTube">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.97A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.97A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#111"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="#">Our Company</a></li>
+                    <li><a href="#">Our Brands</a></li>
+                    <li><a href="#">Investors</a></li>
+                    <li><a href="#">Policies &amp; Reports</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Need Help?</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">International</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Settings</a>
+                <a href="#">Do Not Sell My Info</a>
+            </div>
+            <span>United States &nbsp;|&nbsp; English</span>
+        </div>
+    </footer>
+
+    </div><!-- /#scroll-container -->
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const frameCount = 381;
+        const images     = [];
+        const imageSeq   = { frame: 0 };
+
+        const canvas      = document.getElementById('cinematic-canvas');
+        const ctx         = canvas.getContext('2d');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const loadingBar    = document.getElementById('loadingBar');
+        const loadingText   = document.getElementById('loadingText');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const progressBar   = document.getElementById('progressBar');
+
+        const currentFrame = (i) =>
+            `cinematic-frames/ezgif-frame-${(i + 1).toString().padStart(3, '0')}.jpg`;
+
+        function resizeCanvas() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.fillStyle = '#0A0A0A';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (images[0]?.complete) render();
+        }
+        resizeCanvas();
+
+        function render() {
+            const img = images[imageSeq.frame];
+            if (!img?.complete) return;
+
+            const ca = canvas.width / canvas.height;
+            const ia = img.width / img.height;
+            let dw, dh, ox, oy;
+
+            if (ia > ca) {
+                dh = canvas.height;
+                dw = img.width * (canvas.height / img.height);
+                ox = (canvas.width - dw) / 2;
+                oy = 0;
+            } else {
+                dw = canvas.width;
+                dh = img.height * (canvas.width / img.width);
+                ox = 0;
+                oy = (canvas.height - dh) / 2;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0A0A0A';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, ox, oy, dw, dh);
+        }
+
+        // Progressive loading
+        let loadedCount = 0;
+        const immediateLoadCount = 40;
+
+        for (let i = 0; i < Math.min(immediateLoadCount, frameCount); i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+
+            img.onload = img.onerror = () => {
+                loadedCount++;
+                const pct = Math.round((loadedCount / immediateLoadCount) * 100);
+                loadingBar.style.width = pct + '%';
+                loadingText.textContent = `LOADING... ${pct}%`;
+
+                if (loadedCount === immediateLoadCount) {
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        render();
+                        initScrollAnimation();
+                        loadRemainingFrames();
+                    }, 500);
+                }
+            };
+
+            images.push(img);
+        }
+
+        function loadRemainingFrames() {
+            for (let i = immediateLoadCount; i < frameCount; i++) {
+                const img = new Image();
+                img.src = currentFrame(i);
+                images.push(img);
+            }
+        }
+
+        function initScrollAnimation() {
+            // ── Lenis smooth scroll ──
+            const lenis = new Lenis({
+                duration: 2.4,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smooth: true,
+                smoothTouch: false,
+                touchMultiplier: 1.2
+            });
+            const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+            requestAnimationFrame(raf);
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => lenis.raf(time * 1000));
+            gsap.ticker.lagSmoothing(0);
+
+            // Frame scrub
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-wrapper',
+                    start: 'top top',
+                    end: '80% top',
+                    scrub: 2,
+                    onUpdate: (self) => {
+                        render();
+                        progressBar.style.width = (self.progress * 100) + '%';
+                    }
+                }
+            })
+            .to(imageSeq, { frame: 320, snap: 'frame', ease: 'none', duration: 7 })
+            .to(imageSeq, { frame: frameCount - 1, snap: 'frame', ease: 'none', duration: 3 });
+
+            // Hold last frame
+            ScrollTrigger.create({
+                trigger: '.hero-wrapper',
+                start: '80% top',
+                end: 'bottom top',
+                onEnter:  () => { imageSeq.frame = frameCount - 1; render(); },
+                onUpdate: () => render()
+            });
+
+            // Hide scroll indicator
+            ScrollTrigger.create({
+                trigger: '.hero-wrapper',
+                start: 'top top',
+                end: '5% top',
+                onEnter:     () => scrollIndicator.classList.add('hidden'),
+                onLeaveBack: () => scrollIndicator.classList.remove('hidden')
+            });
+
+            // Fade hero veil
+            gsap.to('.hero-veil', {
+                opacity: 0,
+                scrollTrigger: { trigger: '.hero-wrapper', start: 'top top', end: '8% top', scrub: 2 }
+            });
+
+            // ── Overlay helper: bottom-to-top parallax, alternating left/right ──
+            function overlayTimeline(id, startPct, endPct, side) {
+                const xEnter = side === 'left' ? '-60px' : '60px';
+                const xExit  = side === 'left' ? '-80px' : '80px';
+                gsap.timeline({
+                    scrollTrigger: {
+                        trigger: '.hero-wrapper',
+                        start: startPct + '% top',
+                        end:   endPct   + '% top',
+                        scrub: 2.5
+                    }
+                })
+                .fromTo(id,
+                    { opacity: 0, y: '85vh', x: xEnter },
+                    { opacity: 1, y: '0vh',  x: '0px', duration: 0.38, ease: 'none' }
+                )
+                .to(id, { opacity: 1, y: '-18vh', x: '0px', duration: 0.24, ease: 'none' })
+                .to(id, { opacity: 0, y: '-90vh', x: xExit, duration: 0.38, ease: 'none' });
+            }
+
+            overlayTimeline('#heroOverlay1',  0, 17, 'left');
+            overlayTimeline('#heroOverlay2', 16, 33, 'right');
+            overlayTimeline('#heroOverlay3', 32, 49, 'left');
+            overlayTimeline('#heroOverlay4', 48, 65, 'right');
+            overlayTimeline('#heroOverlay5', 64, 81, 'left');
+
+            // ══════════════════════════════════════════════
+            // TEXT EFFECT UTILITIES
+            // ══════════════════════════════════════════════
+
+            // Wrap every word in an overflow:hidden clip container
+            function wrapWords(selector) {
+                document.querySelectorAll(selector).forEach(el => {
+                    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+                    const nodes = [];
+                    let n;
+                    while ((n = walker.nextNode())) nodes.push(n);
+                    nodes.forEach(textNode => {
+                        const frag = document.createDocumentFragment();
+                        textNode.textContent.split(/(\s+)/).forEach(part => {
+                            if (/^\s+$/.test(part)) {
+                                frag.appendChild(document.createTextNode(part));
+                            } else if (part) {
+                                const wrap = document.createElement('span');
+                                wrap.className = 'clip-wrap';
+                                const inner = document.createElement('span');
+                                inner.className = 'clip-inner';
+                                inner.textContent = part;
+                                wrap.appendChild(inner);
+                                frag.appendChild(wrap);
+                            }
+                        });
+                        textNode.parentNode.replaceChild(frag, textNode);
+                    });
+                });
+            }
+
+            // Character scramble — resolves left-to-right
+            function scramble(selector, triggerSel, startPos) {
+                const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%';
+                document.querySelectorAll(selector).forEach(el => {
+                    const orig = el.textContent.trim();
+                    ScrollTrigger.create({
+                        trigger: triggerSel ? document.querySelector(triggerSel) : el,
+                        start: startPos || 'top 85%',
+                        toggleActions: 'play none none none',
+                        onEnter() {
+                            let f = 0;
+                            const total = orig.length * 5;
+                            const id = setInterval(() => {
+                                el.textContent = orig.split('').map((c, i) => {
+                                    if (/[^A-Za-z0-9]/.test(c)) return c;
+                                    return i * 5 < f ? c : CHARS[Math.floor(Math.random() * CHARS.length)];
+                                }).join('');
+                                if (++f > total) { el.textContent = orig; clearInterval(id); }
+                            }, 38);
+                        }
+                    });
+                });
+            }
+
+            // ── Apply word wrapping to all clip-reveal targets ──
+            wrapWords('.statement-quote');
+            wrapWords('.news-header h2');
+            wrapWords('.brands-showcase-heading');
+            wrapWords('.brands-showcase-sub');
+            wrapWords('.careers-header h2');
+            wrapWords('.careers-header p');
+
+            // ── Scramble for short labels ──
+            scramble('.featured-heading',  '.featured-section',        'top 72%');
+            scramble('.link-red',          '.news-section',            'top 72%');
+            scramble('.footer-col h4',     '.site-footer',             'top 90%');
+            scramble('.footer-tagline',    '.site-footer',             'top 90%');
+
+            // ══════════════════════════════════════════════
+            // CINEMATIC SCENE ANIMATIONS
+            // ══════════════════════════════════════════════
+
+            // ── SCENE 1: Statement ──
+            gsap.timeline({
+                scrollTrigger: { trigger: '.statement-section', start: 'top 68%', toggleActions: 'play none none none' }
+            })
+            .from('.statement-inner', { scale: 0.88, opacity: 0, duration: 1.4, ease: 'power4.out' })
+            .from('.statement-bar',   { scaleX: 0, duration: 0.8, ease: 'power3.out', transformOrigin: 'left center' }, '-=0.9')
+            .from('.statement-quote .clip-inner', { y: '115%', duration: 0.9, stagger: 0.06, ease: 'power3.out' }, '-=0.6')
+            .from('.btn-red', { y: 24, opacity: 0, scale: 0.85, duration: 0.9, ease: 'back.out(1.8)' }, '-=0.4');
+
+            // ── SCENE 2: Featured — 3D spiral entrance ──
+            gsap.timeline({
+                scrollTrigger: { trigger: '.featured-section', start: 'top 68%', toggleActions: 'play none none none' }
+            })
+            .from('.featured-heading', { opacity: 0, duration: 0.01 }) // heading reveals via scramble
+            .from('.carousel-btn', { opacity: 0, scale: 0.6, duration: 0.5, stagger: 0.18, ease: 'back.out(2.2)' }, '+=0.2')
+            .from('.feature-card', {
+                transformPerspective: 1200,
+                opacity: 0,
+                rotateY: (i) => (i % 2 === 0 ? -145 : 145),
+                rotateX: (i) => (i % 2 === 0 ?   30 : -30),
+                z:       (i) => -(500 + i * 120),
+                y:       (i) => (i % 2 === 0 ?  -90 :  90),
+                scale: 0.45,
+                duration: 1.6,
+                stagger: { each: 0.2, ease: 'power1.in' },
+                ease: 'expo.out'
+            }, '-=0.3')
+            .call(() => {
+                gsap.to('.feature-card', {
+                    transformPerspective: 1200,
+                    rotateY: (i) => (i % 2 === 0 ?  7 : -7),
+                    rotateX: (i) => (i % 2 === 0 ?  4 : -4),
+                    duration: (i) => 2.8 + i * 0.6,
+                    repeat: -1, yoyo: true,
+                    ease: 'sine.inOut', stagger: 0.45
+                });
+            });
+
+            // ── SCENE 3: News ──
+            gsap.timeline({
+                scrollTrigger: { trigger: '.news-section', start: 'top 66%', toggleActions: 'play none none none' }
+            })
+            .from('.news-header h2 .clip-inner', { y: '115%', duration: 0.9, stagger: 0.07, ease: 'power3.out' })
+            .from('.news-portrait-card', {
+                opacity: 0, y: 80, scale: 0.92,
+                duration: 1.3, stagger: { each: 0.11, ease: 'power2.out' },
+                ease: 'power4.out'
+            }, '-=0.4');
+
+            // ── SCENE 4: Brands ──
+            gsap.timeline({
+                scrollTrigger: { trigger: '.brands-showcase-section', start: 'top 68%', toggleActions: 'play none none none' }
+            })
+            .from('.brands-showcase-inner', { scale: 0.9, opacity: 0, duration: 1.3, ease: 'power4.out' })
+            .from('.brands-showcase-heading .clip-inner', { y: '115%', duration: 0.85, stagger: 0.07, ease: 'power3.out' }, '-=0.7')
+            .from('.brands-showcase-sub .clip-inner',     { y: '115%', duration: 0.65, stagger: 0.04, ease: 'power2.out' }, '-=0.5')
+            .from('.brand-tile', {
+                opacity: 0, scale: 0.78, y: 18,
+                duration: 0.65,
+                stagger: { each: 0.04, from: 'center', grid: 'auto' },
+                ease: 'back.out(1.5)'
+            }, '-=0.3');
+
+            // ── SCENE 5: Careers ──
+            gsap.timeline({
+                scrollTrigger: { trigger: '.careers-section', start: 'top 68%', toggleActions: 'play none none none' }
+            })
+            .from('.careers-header h2 .clip-inner', { y: '115%', duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+            .from('.careers-header p .clip-inner',  { y: '115%', duration: 0.65, stagger: 0.03, ease: 'power2.out' }, '-=0.5')
+            .from('.career-card', {
+                opacity: 0, y: 70, scale: 1.04,
+                filter: 'brightness(0.15)',
+                duration: 1.3, stagger: { each: 0.2 },
+                ease: 'expo.out'
+            }, '-=0.3');
+
+            // ── SCENE 6: Footer ──
+            gsap.timeline({
+                scrollTrigger: { trigger: '.site-footer', start: 'top 82%', toggleActions: 'play none none none' }
+            })
+            .from('.footer-logo',   { scale: 1.6, opacity: 0, duration: 1.3, ease: 'power4.out' })
+            .from('.footer-copy',   { y: 22, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8')
+            .from('.social-icon',   { opacity: 0, scale: 0, duration: 0.45, stagger: 0.07, ease: 'back.out(2.5)' }, '-=0.5')
+            .from('.footer-col',    { y: 45, opacity: 0, duration: 1, stagger: 0.13, ease: 'power3.out' }, '-=0.55')
+            .from('.footer-bottom', { y: 22, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.55');
+        }
+
+        // Carousel
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        if (track && prevBtn && nextBtn) {
+            const cardW = () => (track.querySelector('.feature-card')?.offsetWidth || 340) + 24;
+            nextBtn.addEventListener('click', () => track.scrollBy({ left: cardW(), behavior: 'smooth' }));
+            prevBtn.addEventListener('click', () => track.scrollBy({ left: -cardW(), behavior: 'smooth' }));
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+    </script>
+</body>
+</html>
+    <!-- ═══ REMOTION SCROLL SECTION ═══ -->
+    <!-- React mounts here and renders the scroll-scrubbed video -->
+    <!-- Vite entry point for the Remotion player -->
+    <script type="module" src="/src/main.tsx"></script>
+</body>

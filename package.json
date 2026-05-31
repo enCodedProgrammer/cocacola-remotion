@@ -1,0 +1,28 @@
+{
+  "name": "cocacola-remotion-video",
+  "version": "1.0.0",
+  "description": "Coca-Cola 6-second Remotion video",
+  "scripts": {
+    "start": "remotion studio",
+    "render": "remotion render src/index.ts CocaColaVideo out/video.mp4 --codec=h264",
+    "build": "vite build scroll-player",
+    "prescroll": "node scripts/prescroll.js",
+    "scroll": "vite scroll-player --port 3001"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "gsap": "^3.12.0",
+    "lenis": "^1.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.4.21"
+  }
+}

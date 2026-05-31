@@ -1,0 +1,16 @@
+Drop your real Coca-Cola product images into this folder.
+
+Expected filenames (update ColaImage.tsx if you use different names):
+
+  coca-cola-1.jpg  — main image used in Scene 1 & scroll (was ezgif-frame-110.jpg)
+  coca-cola-2.jpg  — second scroll image
+  coca-cola-3.jpg  — third scroll image
+
+  new-1.webp       — spill image 1 (Scene 4, far left)
+  new-2.webp       — spill image 2 (Scene 4, left)
+  new-3.webp       — spill image 3 (Scene 4, centre / inside phone)
+  new-4.webp       — spill image 4 (Scene 4, right)
+  new-5.webp       — spill image 5 (Scene 4, far right)
+
+Then open src/components/ColaImage.tsx and set:
+  const USE_REAL_IMAGES = true;
