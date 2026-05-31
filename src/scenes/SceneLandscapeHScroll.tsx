@@ -48,9 +48,13 @@ export const SceneLandscapeHScroll: React.FC = () => {
   );
 
   // "Taste the feeling" — drifts opposite to the scroll direction
-  const textSlide = interpolate(translateX, [SCREEN_W * 0.5, -(IMAGES.length - 1) * SCREEN_W], [-40, 120], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
+  // Input range must be ascending: swap both arrays so [-1098 → 183] maps [120 → -40]
+  const textSlide = interpolate(
+    translateX,
+    [-(IMAGES.length - 1) * SCREEN_W, SCREEN_W * 0.5],
+    [120, -40],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
   const textOpacity = interpolate(frame, [SCROLL_START, SCROLL_START + 10], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
