@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  AbsoluteFill, Easing, interpolate, spring,
+  AbsoluteFill, interpolate, spring,
   useCurrentFrame, useVideoConfig as useVC,
 } from "remotion";
 import { ColaImage } from "../components/ColaImage";
@@ -108,6 +108,20 @@ export const SceneSpillOut: React.FC = () => {
           );
         })}
 
+        {/* ── Hardware buttons — outside overflow:hidden phone body ── */}
+        <div style={{ position:"absolute", left:-9, top:102, width:9, height:28,
+          background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
+          boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)", zIndex:15 }} />
+        <div style={{ position:"absolute", left:-9, top:152, width:9, height:56,
+          background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
+          boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)", zIndex:15 }} />
+        <div style={{ position:"absolute", left:-9, top:222, width:9, height:56,
+          background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
+          boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)", zIndex:15 }} />
+        <div style={{ position:"absolute", right:-9, top:172, width:9, height:84,
+          background:"linear-gradient(270deg,#c8000a,#F40009)", borderRadius:"0 4px 4px 0",
+          boxShadow:"1px 1px 3px rgba(0,0,0,0.3)", zIndex:15 }} />
+
         {/* ── Phone (z-index 10, sits above spilled cards) ────────────────── */}
         <div style={{
           position:"absolute", inset:0,
@@ -121,20 +135,6 @@ export const SceneSpillOut: React.FC = () => {
           {/* Dynamic Island */}
           <div style={{ position:"absolute", top:0, left:"50%", transform:"translateX(-50%)",
             width:126, height:37, backgroundColor:"#0A0A0A", borderRadius:"0 0 22px 22px", zIndex:20 }} />
-
-          {/* Hardware buttons */}
-          <div style={{ position:"absolute", left:-9, top:102, width:9, height:28,
-            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
-            boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)", zIndex:30 }} />
-          <div style={{ position:"absolute", left:-9, top:152, width:9, height:56,
-            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
-            boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)", zIndex:30 }} />
-          <div style={{ position:"absolute", left:-9, top:222, width:9, height:56,
-            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
-            boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)", zIndex:30 }} />
-          <div style={{ position:"absolute", right:-9, top:172, width:9, height:84,
-            background:"linear-gradient(270deg,#c8000a,#F40009)", borderRadius:"0 4px 4px 0",
-            boxShadow:"1px 1px 3px rgba(0,0,0,0.3)", zIndex:30 }} />
 
           {/* Centre image (landscape) inside phone screen */}
           <div style={{ position:"absolute", top:PHONE_TOP_OFFSET, left:0, right:0, bottom:PHONE_BOTTOM_OFFSET, overflow:"hidden", display:"flex", alignItems:"center" }}>

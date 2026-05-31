@@ -48,13 +48,13 @@ export const SceneLandscapeFrame: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#FFF5E4" }}>
 
-      {/* ── "Share the happiness" — starts as dramatic title, becomes caption ── */}
+      {/* ── "Share the happiness" — always above the frame ── */}
       <div style={{
         position: "absolute",
         left: 80,
         top: textTop,
         opacity: textOpacity,
-        zIndex: 5,
+        zIndex: 20,          /* above frame (zIndex 10) so it's never cut */
         pointerEvents: "none",
       }}>
         <div style={{
