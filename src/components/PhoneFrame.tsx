@@ -26,21 +26,21 @@ const HardwareButtons: React.FC<{ opacity: number }> = ({ opacity }) => (
     {/* ── LEFT SIDE ── */}
     {/* Silent / mute toggle */}
     <div style={{ position:"absolute", left:-9, top:102, width:9, height:28,
-      background:"linear-gradient(90deg,#b0b0b0,#d8d8d8)", borderRadius:"4px 0 0 4px",
+      background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
       opacity, boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
     {/* Volume up */}
     <div style={{ position:"absolute", left:-9, top:152, width:9, height:56,
-      background:"linear-gradient(90deg,#b0b0b0,#d8d8d8)", borderRadius:"4px 0 0 4px",
+      background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
       opacity, boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
     {/* Volume down */}
     <div style={{ position:"absolute", left:-9, top:222, width:9, height:56,
-      background:"linear-gradient(90deg,#b0b0b0,#d8d8d8)", borderRadius:"4px 0 0 4px",
+      background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
       opacity, boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
 
     {/* ── RIGHT SIDE ── */}
     {/* Power / sleep */}
     <div style={{ position:"absolute", right:-9, top:172, width:9, height:84,
-      background:"linear-gradient(270deg,#b0b0b0,#d8d8d8)", borderRadius:"0 4px 4px 0",
+      background:"linear-gradient(270deg,#c8000a,#F40009)", borderRadius:"0 4px 4px 0",
       opacity, boxShadow:"1px 1px 3px rgba(0,0,0,0.3)" }} />
   </>
 );

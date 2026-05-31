@@ -86,7 +86,7 @@ export const SceneMobileMorph: React.FC = () => {
             transform: "translateX(-50%)",
             width: 126,
             height: 37,
-            backgroundColor: "#FFF5E4",
+            backgroundColor: "#0A0A0A",
             borderRadius: "0 0 22px 22px",
             zIndex: 20,
             opacity: phoneUIOpacity,
@@ -104,24 +104,29 @@ export const SceneMobileMorph: React.FC = () => {
             overflow: "hidden",
           }}
         >
-          <ColaImage index={2} />
+          {/* Show the first mobile-scroll image so there's no cut at scene boundary */}
+          <ColaImage index={3} />
         </div>
 
-        {/* Home indicator — appears with the phone UI */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 10,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 134,
-            height: 5,
-            backgroundColor: "#F40009",
-            borderRadius: 3,
-            zIndex: 20,
-            opacity: phoneUIOpacity,
-          }}
-        />
+        {/* Home indicator */}
+        <div style={{ position:"absolute", bottom:10, left:"50%", transform:"translateX(-50%)",
+          width:134, height:5, backgroundColor:"#F40009", borderRadius:3, zIndex:20, opacity:phoneUIOpacity }} />
+
+        {/* Hardware buttons — fade in with phone chrome */}
+        <div style={{ opacity: phoneUIOpacity }}>
+          <div style={{ position:"absolute", left:-9, top:102, width:9, height:28,
+            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
+            boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
+          <div style={{ position:"absolute", left:-9, top:152, width:9, height:56,
+            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
+            boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
+          <div style={{ position:"absolute", left:-9, top:222, width:9, height:56,
+            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
+            boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
+          <div style={{ position:"absolute", right:-9, top:172, width:9, height:84,
+            background:"linear-gradient(270deg,#c8000a,#F40009)", borderRadius:"0 4px 4px 0",
+            boxShadow:"1px 1px 3px rgba(0,0,0,0.3)" }} />
+        </div>
       </div>
     </AbsoluteFill>
   );

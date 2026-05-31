@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
 import { ColaImage } from "../components/ColaImage";
 import {
   PHONE_BORDER, PHONE_BOTTOM_OFFSET, PHONE_HEIGHT,
@@ -7,20 +7,10 @@ import {
   SCREEN_H, SCREEN_W,
 } from "../components/PhoneFrame";
 
-const IMAGES       = [3, 4, 5];          // ColaImage slots (new-1 … new-3)
-const TOTAL_FRAMES = 90;                  // 3 s at 30 fps
+const IMAGES       = [3, 4, 5];   // ColaImage slots (new-1 … new-3)
 
 export const SceneMobileScroll: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  // ── Phone entrance ─────────────────────────────────────────────────────────
-  const phoneScale = spring({ fps, frame, config: { damping: 200 }, durationInFrames: 18 });
-
-  // ── Hardware buttons fade in ────────────────────────────────────────────────
-  const btnOpacity = interpolate(frame, [0, 20], [0, 1], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
 
   // ── Portrait scroll: 3 images, scroll UP through 2 full image heights ──────
   // Start scrolling at frame 8, finish by frame 82 (leave 8 frames of hold)
@@ -39,25 +29,26 @@ export const SceneMobileScroll: React.FC = () => {
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
 
       {/* Outer wrapper — no overflow so hardware buttons extend outside */}
-      <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT, transform:`scale(${phoneScale})` }}>
+      {/* No entrance scale: phone is already morphed to full size from Scene 3 */}
+      <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT }}>
 
-        {/* ── Hardware buttons ── */}
-        <div style={{ opacity: btnOpacity }}>
+        {/* ── Hardware buttons — always visible (phone already established) ── */}
+        <div>
           {/* Silent */}
           <div style={{ position:"absolute", left:-9, top:102, width:9, height:28,
-            background:"linear-gradient(90deg,#b0b0b0,#d8d8d8)", borderRadius:"4px 0 0 4px",
+            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
             boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
           {/* Vol up */}
           <div style={{ position:"absolute", left:-9, top:152, width:9, height:56,
-            background:"linear-gradient(90deg,#b0b0b0,#d8d8d8)", borderRadius:"4px 0 0 4px",
+            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
             boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
           {/* Vol down */}
           <div style={{ position:"absolute", left:-9, top:222, width:9, height:56,
-            background:"linear-gradient(90deg,#b0b0b0,#d8d8d8)", borderRadius:"4px 0 0 4px",
+            background:"linear-gradient(90deg,#c8000a,#F40009)", borderRadius:"4px 0 0 4px",
             boxShadow:"-1px 1px 3px rgba(0,0,0,0.3)" }} />
           {/* Power */}
           <div style={{ position:"absolute", right:-9, top:172, width:9, height:84,
-            background:"linear-gradient(270deg,#b0b0b0,#d8d8d8)", borderRadius:"0 4px 4px 0",
+            background:"linear-gradient(270deg,#c8000a,#F40009)", borderRadius:"0 4px 4px 0",
             boxShadow:"1px 1px 3px rgba(0,0,0,0.3)" }} />
         </div>
 
