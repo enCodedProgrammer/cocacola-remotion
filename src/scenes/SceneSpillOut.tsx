@@ -30,7 +30,9 @@ const TOTAL_FRAMES = 60;  // 2 s
 export const SceneSpillOut: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps, width: cw, height: ch } = useVC();
-  const phoneScale = ch > cw ? 1.35 : 1;
+  // Desktop (landscape): 0.85 — leaves room for "Share the love" text below
+  // Mobile  (portrait) : 1.35 — fills the taller canvas comfortably
+  const phoneScale = ch > cw ? 1.35 : 0.85;
 
   const spillProgress = spring({
     fps,
