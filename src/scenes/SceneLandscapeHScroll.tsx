@@ -47,8 +47,30 @@ export const SceneLandscapeHScroll: React.FC = () => {
     }
   );
 
+  // "Taste the feeling" — drifts opposite to the scroll direction
+  const textSlide = interpolate(translateX, [SCREEN_W * 0.5, -(IMAGES.length - 1) * SCREEN_W], [-40, 120], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+  const textOpacity = interpolate(frame, [SCROLL_START, SCROLL_START + 10], [0, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+
   return (
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
+
+      {/* "Taste the feeling" — bottom label that drifts with scroll */}
+      <div style={{
+        position:"absolute", bottom:55, left:0, right:0,
+        textAlign:"center",
+        transform:`translateX(${textSlide}px)`,
+        opacity:textOpacity,
+        pointerEvents:"none", zIndex:20,
+      }}>
+        <div style={{ fontFamily:'"Playfair Display", serif', fontSize:28, fontStyle:"italic", color:"rgba(200,118,10,0.9)", letterSpacing:"0.12em" }}>
+          — Taste the feeling —
+        </div>
+      </div>
+
       <div style={{ transform:`scale(${phoneScale})`, transformOrigin:"center center" }}>
       {/* Outer wrapper */}
       <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT }}>

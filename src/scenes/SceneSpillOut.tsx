@@ -44,8 +44,31 @@ export const SceneSpillOut: React.FC = () => {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
+  // "Share the love" — dramatic text that rises as cards spill
+  const bgTextOpacity = interpolate(spillProgress, [0.1, 0.5], [0, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+  const bgTextScale = interpolate(spillProgress, [0.1, 0.6], [0.7, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+
   return (
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
+
+      {/* "Share the love" — rises up as the cards explode outward */}
+      <div style={{
+        position:"absolute", bottom:55, left:0, right:0,
+        textAlign:"center",
+        opacity:bgTextOpacity,
+        transform:`scale(${bgTextScale})`,
+        transformOrigin:"center bottom",
+        pointerEvents:"none", zIndex:5,
+      }}>
+        <div style={{ fontFamily:'"Pacifico", cursive', fontSize:88, color:"#F40009", textShadow:"0 6px 30px rgba(244,0,9,0.2)", lineHeight:1 }}>
+          Share the love
+        </div>
+      </div>
+
       <div style={{ transform:`scale(${phoneScale})`, transformOrigin:"center center" }}>
       {/* Centred anchor — everything positioned relative to phone centre */}
       <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT }}>

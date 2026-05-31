@@ -48,6 +48,16 @@ export const SceneMobileMorph: React.FC = () => {
     extrapolateRight: "clamp",
   });
 
+  // "Going mobile." text — fades in on the right as phone takes shape
+  const textOpacity = interpolate(progress, [0.4, 0.85], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const textX = interpolate(progress, [0.4, 0.85], [60, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
   return (
     <AbsoluteFill
       style={{
@@ -57,6 +67,39 @@ export const SceneMobileMorph: React.FC = () => {
         backgroundColor: "#FFF5E4",
       }}
     >
+      {/* "Going mobile." — appears on the right as phone forms */}
+      <div style={{
+        position: "absolute",
+        right: 90,
+        top: "50%",
+        transform: `translateY(-50%) translateX(${textX}px)`,
+        opacity: textOpacity,
+        textAlign: "right",
+        pointerEvents: "none",
+        zIndex: 5,
+      }}>
+        <div style={{
+          fontFamily: '"Pacifico", cursive',
+          fontSize: 68,
+          color: "#F40009",
+          lineHeight: 1.2,
+          textShadow: "0 4px 20px rgba(244,0,9,0.15)",
+        }}>
+          Going<br />mobile.
+        </div>
+        <div style={{
+          fontFamily: '"Montserrat", sans-serif',
+          fontSize: 15,
+          fontWeight: 700,
+          letterSpacing: "0.3em",
+          textTransform: "uppercase",
+          color: "rgba(200,118,10,0.8)",
+          marginTop: 10,
+        }}>
+          Since 1886
+        </div>
+      </div>
+
       <div
         style={{
           width,

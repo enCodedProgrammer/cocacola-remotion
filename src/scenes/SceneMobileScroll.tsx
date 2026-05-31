@@ -17,6 +17,14 @@ export const SceneMobileScroll: React.FC = () => {
 
   // ── Portrait scroll: 3 images, scroll UP through 2 full image heights ──────
   // Start scrolling at frame 8, finish by frame 82 (leave 8 frames of hold)
+  // "Open Happiness" above the phone
+  const headerOpacity = interpolate(frame, [0, 10], [0, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+  const headerY = interpolate(frame, [0, 10], [20, 0], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+
   const scrollY = interpolate(
     frame,
     [8, 78],
@@ -30,6 +38,18 @@ export const SceneMobileScroll: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
+
+      {/* "Open Happiness" — floats above the phone */}
+      <div style={{
+        position:"absolute", top:60, left:0, right:0,
+        textAlign:"center", opacity:headerOpacity,
+        transform:`translateY(${headerY}px)`,
+        pointerEvents:"none", zIndex:20,
+      }}>
+        <div style={{ fontFamily:'"Pacifico", cursive', fontSize:72, color:"#F40009", textShadow:"0 4px 24px rgba(244,0,9,0.2)" }}>
+          Open Happiness
+        </div>
+      </div>
 
       {/* Scale wrapper — 1.35× on mobile composition (portrait canvas) */}
       <div style={{ transform:`scale(${phoneScale})`, transformOrigin:"center center" }}>
