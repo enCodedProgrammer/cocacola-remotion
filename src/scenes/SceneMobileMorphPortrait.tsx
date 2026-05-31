@@ -18,8 +18,10 @@ export const SceneMobileMorphPortrait: React.FC = () => {
     durationInFrames: 30,
   });
 
-  const width        = interpolate(progress, [0, 1], [PFRAME_W,      PHONE_WIDTH]);
-  const height       = interpolate(progress, [0, 1], [PFRAME_H,      PHONE_HEIGHT]);
+  const targetW = PHONE_WIDTH  * 1.35;
+  const targetH = PHONE_HEIGHT * 1.35;
+  const width        = interpolate(progress, [0, 1], [PFRAME_W,      targetW]);
+  const height       = interpolate(progress, [0, 1], [PFRAME_H,      targetH]);
   const borderRadius = interpolate(progress, [0, 1], [PFRAME_RADIUS, PHONE_RADIUS]);
   const innerPad     = interpolate(progress, [0, 1], [40, 0]);
   const innerTop     = interpolate(progress, [0, 1], [40, PHONE_TOP_OFFSET]);

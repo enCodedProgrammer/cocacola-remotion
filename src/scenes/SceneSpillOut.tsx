@@ -1,7 +1,7 @@
 import React from "react";
 import {
   AbsoluteFill, Easing, interpolate, spring,
-  useCurrentFrame, useVideoConfig,
+  useCurrentFrame, useVideoConfig as useVC,
 } from "remotion";
 import { ColaImage } from "../components/ColaImage";
 import {
@@ -29,7 +29,8 @@ const TOTAL_FRAMES = 60;  // 2 s
 
 export const SceneSpillOut: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width: cw, height: ch } = useVC();
+  const phoneScale = ch > cw ? 1.35 : 1;
 
   const spillProgress = spring({
     fps,
@@ -45,7 +46,7 @@ export const SceneSpillOut: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
-
+      <div style={{ transform:`scale(${phoneScale})`, transformOrigin:"center center" }}>
       {/* Centred anchor — everything positioned relative to phone centre */}
       <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT }}>
 
@@ -125,6 +126,7 @@ export const SceneSpillOut: React.FC = () => {
         </div>
 
       </div>
+      </div>{/* /scale wrapper */}
     </AbsoluteFill>
   );
 };

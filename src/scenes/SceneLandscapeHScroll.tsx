@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { ColaImage } from "../components/ColaImage";
 import {
   PHONE_BORDER, PHONE_BOTTOM_OFFSET, PHONE_HEIGHT,
@@ -20,6 +20,8 @@ const SCROLL_END   = 85;
 
 export const SceneLandscapeHScroll: React.FC = () => {
   const frame = useCurrentFrame();
+  const { width: cw, height: ch } = useVideoConfig();
+  const phoneScale = ch > cw ? 1.35 : 1;
 
   // ── Portrait → landscape: compress image height ───────────────────────────
   const imageH = interpolate(frame, [0, MORPH_END], [SCREEN_H, LANDSCAPE_H], {
@@ -47,7 +49,7 @@ export const SceneLandscapeHScroll: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
-
+      <div style={{ transform:`scale(${phoneScale})`, transformOrigin:"center center" }}>
       {/* Outer wrapper */}
       <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT }}>
 
@@ -107,6 +109,7 @@ export const SceneLandscapeHScroll: React.FC = () => {
             width:134, height:5, backgroundColor:"#F40009", borderRadius:3, zIndex:20 }} />
         </div>
       </div>
+      </div>{/* /scale wrapper */}
     </AbsoluteFill>
   );
 };

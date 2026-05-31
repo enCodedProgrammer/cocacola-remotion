@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { ColaImage } from "../components/ColaImage";
 import {
   PHONE_BORDER, PHONE_BOTTOM_OFFSET, PHONE_HEIGHT,
@@ -11,6 +11,9 @@ const IMAGES       = [3, 4, 5];   // ColaImage slots (new-1 … new-3)
 
 export const SceneMobileScroll: React.FC = () => {
   const frame = useCurrentFrame();
+  const { width: cw, height: ch } = useVideoConfig();
+  // Portrait canvas = mobile composition → scale phone up slightly
+  const phoneScale = ch > cw ? 1.35 : 1;
 
   // ── Portrait scroll: 3 images, scroll UP through 2 full image heights ──────
   // Start scrolling at frame 8, finish by frame 82 (leave 8 frames of hold)
@@ -28,8 +31,8 @@ export const SceneMobileScroll: React.FC = () => {
   return (
     <AbsoluteFill style={{ display:"flex", alignItems:"center", justifyContent:"center", backgroundColor:"#FFF5E4" }}>
 
-      {/* Outer wrapper — no overflow so hardware buttons extend outside */}
-      {/* No entrance scale: phone is already morphed to full size from Scene 3 */}
+      {/* Scale wrapper — 1.35× on mobile composition (portrait canvas) */}
+      <div style={{ transform:`scale(${phoneScale})`, transformOrigin:"center center" }}>
       <div style={{ position:"relative", width:PHONE_WIDTH, height:PHONE_HEIGHT }}>
 
         {/* ── Hardware buttons — always visible (phone already established) ── */}
@@ -81,6 +84,7 @@ export const SceneMobileScroll: React.FC = () => {
             width:134, height:5, backgroundColor:"#F40009", borderRadius:3, zIndex:20 }} />
         </div>
       </div>
+      </div>{/* /scale wrapper */}
     </AbsoluteFill>
   );
 };
