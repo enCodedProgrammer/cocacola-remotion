@@ -822,14 +822,39 @@
             }
             .cta-buttons { flex-direction: column; align-items: center; }
             .cta-btn { width: 100%; max-width: 300px; }
-            .feature-card { flex: 0 0 85vw; min-height: 360px; }
-            .news-portrait-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+
+            /* ── 96% width for every section below the hero ── */
+            .statement-section,
+            .featured-section,
+            .news-section,
+            .brands-showcase-section,
+            .careers-section,
+            .site-footer { padding-left: 2%; padding-right: 2%; }
+
+            .statement-inner          { padding: 2.5rem 0; max-width: 100%; }
+            .featured-inner           { padding: 0;        max-width: 100%; }
+            .brands-showcase-inner    { padding: 2rem 0;   max-width: 100%; }
+            .careers-inner, .footer-inner { max-width: 100%; }
+            /* Featured: 94vw card + arrows reflow below the track */
+            .feature-card { flex: 0 0 94vw; min-height: 400px; }
+            .carousel-wrapper {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                gap: 0.75rem;
+            }
+            .carousel-track { grid-column: 1 / -1; grid-row: 1; }
+            #prevBtn       { grid-column: 1;       grid-row: 2; width: 100%; height: 48px; }
+            #nextBtn       { grid-column: 2;       grid-row: 2; width: 100%; height: 48px; }
+
+            /* News: single column */
+            .news-portrait-grid { grid-template-columns: 1fr; gap: 0.75rem; }
             .news-portrait-card { border-radius: 12px; }
             .news-portrait-card:nth-child(1),
             .news-portrait-card:nth-child(2),
             .news-portrait-card:nth-child(3),
             .news-portrait-card:nth-child(4),
-            .news-portrait-card:nth-child(5) { height: clamp(180px, 45vw, 300px); }
+            .news-portrait-card:nth-child(5) { height: clamp(240px, 65vw, 420px); }
             .brands-tile-grid { grid-template-columns: repeat(2, 1fr); }
             .careers-grid { grid-template-columns: 1fr; }
             .career-card { min-height: 300px; }
