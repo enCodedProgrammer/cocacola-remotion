@@ -1,15 +1,25 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Player, type PlayerRef } from "@remotion/player";
-import { CocaColaComposition } from "../../src/Composition";
+import { CocaColaComposition }       from "../../src/Composition";
+import { CocaColaCompositionMobile } from "../../src/CompositionMobile";
 
 const TOTAL_FRAMES = 374;
-const SECTION_VH   = 600;   // how many vh of scroll space the video gets
-const LERP         = 0.10;  // smoothness (lower = heavier lag)
+const SECTION_VH   = 600;
+const LERP         = 0.10;
+const MOBILE_BP    = 768; // px — matches the CSS breakpoint
 
 export const RemotionSection: React.FC = () => {
   const sectionRef    = useRef<HTMLDivElement>(null);
   const playerRef     = useRef<PlayerRef>(null);
   const hasSnappedRef = useRef(false);
+
+  // Switch composition + dimensions when the viewport crosses the mobile breakpoint
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < MOBILE_BP);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < MOBILE_BP);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     let current = 0;
@@ -129,11 +139,11 @@ export const RemotionSection: React.FC = () => {
       >
         <Player
           ref={playerRef}
-          component={CocaColaComposition}
+          component={isMobile ? CocaColaCompositionMobile : CocaColaComposition}
           durationInFrames={375}
           fps={30}
-          compositionWidth={1920}
-          compositionHeight={1080}
+          compositionWidth={isMobile  ? 1080 : 1920}
+          compositionHeight={isMobile ? 1920 : 1080}
           style={{ width: "100%", height: "100%" }}
           controls={false}
           autoPlay={false}
