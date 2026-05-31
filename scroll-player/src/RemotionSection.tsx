@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Player, type PlayerRef } from "@remotion/player";
 import { CocaColaComposition } from "../../src/Composition";
 
-const TOTAL_FRAMES = 179;
+const TOTAL_FRAMES = 374;
 const SECTION_VH   = 600;   // how many vh of scroll space the video gets
 const LERP         = 0.10;  // smoothness (lower = heavier lag)
 
@@ -130,7 +130,7 @@ export const RemotionSection: React.FC = () => {
         <Player
           ref={playerRef}
           component={CocaColaComposition}
-          durationInFrames={TOTAL_FRAMES + 1}
+          durationInFrames={375}
           fps={30}
           compositionWidth={1920}
           compositionHeight={1080}
