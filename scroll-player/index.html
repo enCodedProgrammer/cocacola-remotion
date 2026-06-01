@@ -47,7 +47,7 @@
         .loading-screen.hidden { opacity: 0; pointer-events: none; }
 
         .loading-logo {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Pacifico', cursive;
             font-size: clamp(3rem, 10vw, 7rem);
             font-weight: 700;
             color: var(--red);
@@ -395,7 +395,7 @@
         /* ── STATEMENT SECTION ── */
         .statement-section {
             background: #FFF5E4;
-            padding: 7rem 2rem;
+            padding: 4rem 2rem;
             text-align: center;
             position: relative;
         }
@@ -406,8 +406,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
-            padding: 4rem 5rem;
+            gap: 1.5rem;
+            padding: 2.5rem 3rem;
         }
         .statement-bar { width: 60px; height: 3px; background: var(--red); }
         .statement-quote {
@@ -434,7 +434,7 @@
         .btn-red:hover { background: #b00007; box-shadow: 0 4px 20px rgba(244,0,9,0.3); }
 
         /* ── FEATURED STORIES ── */
-        .featured-section { background: #FFF5E4; padding: 6rem 0; position: relative; }
+        .featured-section { background: #FFF5E4; padding: 4rem 0; position: relative; }
         .featured-inner { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
         .featured-heading {
             font-family: 'Playfair Display', serif;
@@ -513,12 +513,12 @@
         .carousel-btn:hover { background: #b00007; }
 
         /* ── NEWS SECTION ── */
-        .news-section { background: #FFF5E4; padding: 7rem 2rem; overflow: hidden; position: relative; }
+        .news-section { background: #FFF5E4; padding: 4rem 2rem; overflow: hidden; position: relative; }
         .news-inner { max-width: 100%; margin: 0 auto; }
         .news-header {
-            display: flex; justify-content: space-between;
+            display: flex; justify-content: center;
             align-items: flex-end; margin-bottom: 3rem;
-            gap: 2rem; flex-wrap: wrap;
+            gap: 2rem; flex-wrap: wrap; text-align: center;
         }
         .news-header h2 {
             font-family: 'Playfair Display', serif;
@@ -582,7 +582,7 @@
         /* ── BRANDS SHOWCASE ── */
         .brands-showcase-section {
             background: #FFF5E4;
-            padding: 7rem 2rem; text-align: center;
+            padding: 4rem 2rem; text-align: center;
             position: relative;
         }
         .brands-showcase-inner {
@@ -630,13 +630,13 @@
         /* ── CAREERS SECTION ── */
         .careers-section {
             background: #FFF5E4;
-            padding: 7rem 2rem;
+            padding: 4rem 2rem;
             position: relative;
         }
         .careers-inner { max-width: 1200px; margin: 0 auto; }
         .careers-header {
-            text-align: center; margin-bottom: 4rem;
-            padding: 3.5rem 4rem;
+            text-align: center; margin-bottom: 2.5rem;
+            padding: 2rem 2rem;
         }
         .careers-header h2 {
             font-family: 'Playfair Display', serif;
@@ -654,6 +654,7 @@
             position: relative; min-height: 380px;
             overflow: hidden; border-radius: 20px;
             background-size: cover; background-position: center;
+            will-change: transform, opacity;
         }
         .career-card-overlay {
             position: absolute; inset: 0;
@@ -802,18 +803,21 @@
             .cta-buttons { flex-direction: column; align-items: center; }
             .cta-btn { width: 100%; max-width: 300px; }
 
-            /* ── 96% width for every section below the hero ── */
+            /* ── tighter sections on mobile ── */
             .statement-section,
             .featured-section,
             .news-section,
             .brands-showcase-section,
-            .careers-section,
-            .site-footer { padding-left: 2%; padding-right: 2%; }
+            .careers-section { padding-top: 2.5rem; padding-bottom: 2.5rem; padding-left: 4%; padding-right: 4%; }
 
-            .statement-inner          { padding: 2.5rem 0; max-width: 100%; }
+            .site-footer { padding-left: 4%; padding-right: 4%; }
+
+            .statement-inner          { padding: 1.5rem 0; max-width: 100%; gap: 1rem; }
             .featured-inner           { padding: 0;        max-width: 100%; }
-            .brands-showcase-inner    { padding: 2rem 0;   max-width: 100%; }
+            .brands-showcase-inner    { padding: 1rem 0;   max-width: 100%; }
+            .brands-showcase-sub      { margin-bottom: 2rem; }
             .careers-inner, .footer-inner { max-width: 100%; }
+            .careers-header           { padding: 1rem 0; margin-bottom: 1.5rem; }
             /* Featured: 94vw card + arrows reflow below the track */
             .feature-card { flex: 0 0 94vw; min-height: 400px; }
             .carousel-wrapper {
@@ -1086,7 +1090,6 @@
         <div class="news-inner">
             <div class="news-header">
                 <h2>Dive Into Our<br><span>Latest News</span></h2>
-                <a href="#" class="link-red">See All News &rarr;</a>
             </div>
             <div class="news-portrait-grid">
                 <a class="news-portrait-card" href="#">
@@ -1529,10 +1532,9 @@
             .from('.careers-header h2 .clip-inner', { y: '115%', duration: 0.9, stagger: 0.08, ease: 'power3.out' })
             .from('.careers-header p .clip-inner',  { y: '115%', duration: 0.65, stagger: 0.03, ease: 'power2.out' }, '-=0.5')
             .from('.career-card', {
-                opacity: 0, y: 70, scale: 1.04,
-                filter: 'brightness(0.15)',
-                duration: 1.3, stagger: { each: 0.2 },
-                ease: 'expo.out'
+                opacity: 0, y: 50,
+                duration: 0.85, stagger: { each: 0.15 },
+                ease: 'power3.out'
             }, '-=0.3');
 
             // ── SCENE 6: Footer ──
