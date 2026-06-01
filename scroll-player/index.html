@@ -517,7 +517,7 @@
         .news-inner { max-width: 100%; margin: 0 auto; }
         .news-header {
             display: flex; justify-content: center;
-            align-items: flex-end; margin-bottom: 3rem;
+            align-items: flex-end; margin-bottom: 1.5rem;
             gap: 2rem; flex-wrap: wrap; text-align: center;
         }
         .news-header h2 {
@@ -841,7 +841,9 @@
             .brands-tile-grid { grid-template-columns: repeat(2, 1fr); }
             .careers-grid { grid-template-columns: 1fr; }
             .career-card { min-height: 300px; }
-            .news-header { flex-direction: column; align-items: flex-start; }
+            .news-header { flex-direction: column; align-items: center; margin-bottom: 0.75rem; }
+            .news-header h2 { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+            .news-section { padding-top: 1.5rem; }
             .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
             .footer-bottom { flex-direction: column; align-items: flex-start; }
         }
