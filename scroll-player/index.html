@@ -1562,9 +1562,13 @@
         const mainNav     = document.getElementById('main-nav');
         const hamburger   = document.getElementById('navHamburger');
 
-        // Transparent over hero → solid once scrolled
+        // Transparent over hero → solid once Statement section is reached
+        const statementSection = document.getElementById('statement-section');
         const onNavScroll = () => {
-            mainNav.classList.toggle('scrolled', window.scrollY > 60);
+            const threshold = statementSection
+                ? statementSection.getBoundingClientRect().top + window.scrollY - 10
+                : 60;
+            mainNav.classList.toggle('scrolled', window.scrollY >= threshold);
         };
         window.addEventListener('scroll', onNavScroll, { passive: true });
         onNavScroll();
