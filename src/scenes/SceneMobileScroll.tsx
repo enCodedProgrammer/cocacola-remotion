@@ -13,7 +13,7 @@ export const SceneMobileScroll: React.FC = () => {
   const frame = useCurrentFrame();
   const { width: cw, height: ch } = useVideoConfig();
   // Portrait canvas = mobile composition → scale phone up slightly
-  const phoneScale = ch > cw ? 1.35 : 1;
+  const phoneScale = ch > cw ? 1.35 : 0.85;
 
   // ── Portrait scroll: 3 images, scroll UP through 2 full image heights ──────
   // Start scrolling at frame 8, finish by frame 82 (leave 8 frames of hold)
