@@ -16,7 +16,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html { background: #0A0A0A; }
+        html { background: #FFF5E4; }
 
         :root {
             --red:   #F40009;
@@ -394,11 +394,12 @@
 
         /* ── STATEMENT SECTION ── */
         .statement-section {
-            background: rgba(255,255,255,0.50);
+            background: #FFF5E4;
             padding: 7rem 2rem;
             text-align: center;
             position: relative;
         }
+
         .statement-inner {
             max-width: 860px;
             margin: 0 auto;
@@ -433,7 +434,7 @@
         .btn-red:hover { background: #b00007; box-shadow: 0 4px 20px rgba(244,0,9,0.3); }
 
         /* ── FEATURED STORIES ── */
-        .featured-section { background: rgba(255,255,255,0.50); padding: 6rem 0; position: relative; }
+        .featured-section { background: #FFF5E4; padding: 6rem 0; position: relative; }
         .featured-inner { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
         .featured-heading {
             font-family: 'Playfair Display', serif;
@@ -512,7 +513,7 @@
         .carousel-btn:hover { background: #b00007; }
 
         /* ── NEWS SECTION ── */
-        .news-section { background: rgba(255,255,255,0.50); padding: 7rem 2rem; overflow: hidden; position: relative; }
+        .news-section { background: #FFF5E4; padding: 7rem 2rem; overflow: hidden; position: relative; }
         .news-inner { max-width: 100%; margin: 0 auto; }
         .news-header {
             display: flex; justify-content: space-between;
@@ -580,7 +581,7 @@
 
         /* ── BRANDS SHOWCASE ── */
         .brands-showcase-section {
-            background: rgba(255,255,255,0.50);
+            background: #FFF5E4;
             padding: 7rem 2rem; text-align: center;
             position: relative;
         }
@@ -628,7 +629,7 @@
 
         /* ── CAREERS SECTION ── */
         .careers-section {
-            background: rgba(255,255,255,0.50);
+            background: #FFF5E4;
             padding: 7rem 2rem;
             position: relative;
         }
@@ -665,22 +666,39 @@
         .career-card-content {
             position: absolute; bottom: 0; left: 0; right: 0;
             padding: 2rem; z-index: 2;
+            display: flex; justify-content: center;
         }
         .career-card-content h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem; font-weight: 700;
-            color: #fff; margin-bottom: 0.5rem;
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #fff;
+            border: 1.5px solid rgba(255,255,255,0.35);
+            border-radius: 50px;
+            padding: 1.1rem 2.6rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
-        .career-card-content p {
-            font-size: 0.88rem; color: rgba(255,255,255,0.7);
-            font-weight: 300; line-height: 1.65; margin-bottom: 1rem;
-        }
-        .career-link {
-            font-size: 0.72rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.15em;
-            color: var(--red); text-decoration: none; transition: color 0.3s;
-        }
-        .career-link:hover { color: #fff; }
+
+        /* Three complementary reds — deep crimson / classic red / rose-red */
+        .careers-grid .career-card:nth-child(1) .career-card-content h3
+            { background: rgba(155, 27, 48, 0.88); }   /* deep burgundy-red */
+        .careers-grid .career-card:nth-child(2) .career-card-content h3
+            { background: rgba(244, 0, 9, 0.88); }     /* Coca-Cola red */
+        .careers-grid .career-card:nth-child(3) .career-card-content h3
+            { background: rgba(200, 41, 42, 0.88); }   /* warm crimson */
+
+        .careers-grid .career-card:nth-child(1):hover .career-card-content h3
+            { background: rgba(155, 27, 48, 1); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(155,27,48,0.5); }
+        .careers-grid .career-card:nth-child(2):hover .career-card-content h3
+            { background: rgba(244, 0, 9, 1);   transform: translateY(-3px); box-shadow: 0 8px 24px rgba(244,0,9,0.5); }
+        .careers-grid .career-card:nth-child(3):hover .career-card-content h3
+            { background: rgba(200, 41, 42, 1); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(200,41,42,0.5); }
 
         /* ── FOOTER ── */
         .site-footer { background: #111; padding: 5rem 2rem 2rem; }
@@ -765,45 +783,6 @@
         .clip-inner { display: inline-block; }
 
         /* ── FIXED ORB BACKGROUND ── */
-        #orb-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-            background: #F7F7F7;
-        }
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            mix-blend-mode: multiply;
-            will-change: transform;
-        }
-        .orb-r { background: rgba(244, 0, 9, 0.45); }
-        .orb-a { background: rgba(200, 118, 10, 0.42); }
-        .orb-w { background: rgba(255, 160, 80, 0.38); }
-        .orb-y { background: rgba(235, 227, 202, 0.65); }
-
-        @keyframes orbDrift1 {
-            0%   { transform: translate(0, 0); }
-            25%  { transform: translate(28vw, -18vh); }
-            50%  { transform: translate(8vw, 32vh); }
-            75%  { transform: translate(-22vw, 12vh); }
-            100% { transform: translate(0, 0); }
-        }
-        @keyframes orbDrift2 {
-            0%   { transform: translate(0, 0); }
-            33%  { transform: translate(-26vw, 20vh); }
-            66%  { transform: translate(18vw, -28vh); }
-            100% { transform: translate(0, 0); }
-        }
-        @keyframes orbDrift3 {
-            0%   { transform: translate(0, 0); }
-            40%  { transform: translate(20vw, 25vh); }
-            80%  { transform: translate(-32vw, -15vh); }
-            100% { transform: translate(0, 0); }
-        }
 
         /* ── RESPONSIVE ── */
         @media (max-width: 1024px) {
@@ -862,6 +841,84 @@
             .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
             .footer-bottom { flex-direction: column; align-items: flex-start; }
         }
+
+        /* ── NAVIGATION ── */
+        #main-nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 9999; padding: 0 2.5rem;
+            transition: background 0.45s ease, box-shadow 0.45s ease;
+        }
+        #main-nav.scrolled {
+            background: rgba(255,245,228,0.96);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+        }
+        .nav-inner {
+            max-width: 1400px; margin: 0 auto;
+            height: 70px; display: flex; align-items: center;
+            justify-content: space-between; gap: 2rem;
+        }
+        .nav-logo {
+            font-family: 'Pacifico', cursive; font-size: 1.55rem;
+            color: var(--red); text-decoration: none; flex-shrink: 0;
+        }
+        .nav-links { display: flex; list-style: none; gap: 2.2rem; align-items: center; }
+        .nav-links a {
+            font-family: 'Montserrat', sans-serif; font-size: 0.72rem;
+            font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+            text-decoration: none; color: rgba(255,245,228,0.85); transition: color 0.3s; white-space: nowrap;
+        }
+        #main-nav.scrolled .nav-links a  { color: #1A1A1A; }
+        .nav-links a:hover, #main-nav.scrolled .nav-links a:hover { color: var(--red); }
+        .nav-cta {
+            font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+            color: #fff; background: var(--red); padding: 0.65rem 1.6rem;
+            border-radius: 50px; flex-shrink: 0;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+        .nav-cta:hover { background: #b00007; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(244,0,9,0.35); }
+        /* Hamburger */
+        .nav-hamburger {
+            display: none; flex-direction: column; justify-content: center;
+            gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; flex-shrink: 0;
+        }
+        .nav-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--white); border-radius: 2px; transition: all 0.35s ease;
+        }
+        #main-nav.scrolled .nav-hamburger span { background: #1A1A1A; }
+        #main-nav.menu-open .nav-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        #main-nav.menu-open .nav-hamburger span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        #main-nav.menu-open .nav-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        /* Mobile slide-down menu */
+        .nav-mobile-menu {
+            flex-direction: column; gap: 0;
+            position: fixed; top: 70px; left: 0; right: 0;
+            background: rgba(255,245,228,0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border-top: 1px solid rgba(244,0,9,0.15); z-index: 9998;
+            opacity: 0; transform: translateY(-8px);
+            transition: opacity 0.3s, transform 0.3s; pointer-events: none; display: flex;
+        }
+        #main-nav.menu-open .nav-mobile-menu { opacity: 1; transform: translateY(0); pointer-events: all; }
+        .nav-mobile-menu a {
+            font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+            color: #1A1A1A; padding: 1.2rem 2rem; border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: color 0.2s, background 0.2s;
+        }
+        .nav-mobile-menu a:hover { color: var(--red); background: rgba(244,0,9,0.04); }
+        .nav-mobile-cta {
+            margin: 1rem 2rem 1.5rem; text-align: center;
+            background: var(--red) !important; color: #fff !important;
+            border-radius: 50px; border-bottom: none !important; padding: 0.9rem 2rem !important;
+        }
+        .nav-mobile-cta:hover { background: #b00007 !important; }
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta { display: none; }
+            .nav-hamburger { display: flex; }
+            #main-nav { padding: 0 1.25rem; }
+        }
     </style>
 </head>
 <body>
@@ -879,14 +936,32 @@
     <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
 
-    <!-- Single fixed orb background — sits behind all sections -->
-    <div id="orb-bg">
-        <span class="orb orb-r" style="width:600px;height:600px;top:5vh;left:5vw;   animation:orbDrift1 22s ease-in-out infinite -4s;"></span>
-        <span class="orb orb-a" style="width:520px;height:520px;top:30vh;right:8vw; animation:orbDrift2 28s ease-in-out infinite -10s;"></span>
-        <span class="orb orb-y" style="width:500px;height:500px;bottom:10vh;left:25vw;animation:orbDrift3 19s ease-in-out infinite -6s;"></span>
-        <span class="orb orb-y" style="width:420px;height:420px;bottom:5vh;right:5vw;animation:orbDrift2 24s ease-in-out infinite -14s;"></span>
-        <span class="orb orb-a" style="width:340px;height:340px;top:55vh;left:50vw; animation:orbDrift1 17s ease-in-out infinite -3s;"></span>
-    </div>
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">Coca&#8209;Cola</a>
+            <ul class="nav-links">
+                <li><a href="#statement-section">Our Story</a></li>
+                <li><a href="#featured-section">Featured</a></li>
+                <li><a href="#news-section">News</a></li>
+                <li><a href="#brands-section">Brands</a></li>
+                <li><a href="#careers-section">Careers</a></li>
+            </ul>
+            <a href="#remotion-section" class="nav-cta">The Film</a>
+            <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div class="nav-mobile-menu" id="navMobileMenu">
+            <a href="#statement-section">Our Story</a>
+            <a href="#featured-section">Featured</a>
+            <a href="#news-section">News</a>
+            <a href="#brands-section">Brands</a>
+            <a href="#careers-section">Careers</a>
+            <a href="#remotion-section" class="nav-mobile-cta">The Film</a>
+        </div>
+    </nav>
 
     <!-- Grain overlay (fixed, page-wide film texture) -->
     <div class="grain-overlay"></div>
@@ -945,9 +1020,11 @@
         </div>
     </div>
 
+        <div id="remotion-section"></div>
+
 
     <!-- Statement Section -->
-    <section class="statement-section" data-scroll-section>
+    <section class="statement-section" id="statement-section" data-scroll-section>
         <div class="statement-inner">
             <div class="statement-bar"></div>
             <p class="statement-quote">"We're refreshing what it means to make a difference: one sip, story and impact at a time."</p>
@@ -955,8 +1032,8 @@
         </div>
     </section>
 
-    <!-- Featured Stories -->
-    <section class="featured-section" data-scroll-section>
+    <!-- Featured Stories 
+    <section class="featured-section" id="featured-section" data-scroll-section>
         <div class="featured-inner">
             <h2 class="featured-heading">Featured Stories</h2>
             <div class="carousel-wrapper">
@@ -1002,10 +1079,10 @@
                 <button class="carousel-btn" id="nextBtn" aria-label="Next">&#8594;</button>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- News Section -->
-    <section class="news-section" data-scroll-section>
+    <section class="news-section" id="news-section" data-scroll-section>
         <div class="news-inner">
             <div class="news-header">
                 <h2>Dive Into Our<br><span>Latest News</span></h2>
@@ -1057,7 +1134,7 @@
     </section>
 
     <!-- Brands Showcase -->
-    <section class="brands-showcase-section" data-scroll-section>
+    <section class="brands-showcase-section" id="brands-section" data-scroll-section>
         <div class="brands-showcase-inner">
             <h2 class="brands-showcase-heading">Say Hello to <span>the Team</span></h2>
             <p class="brands-showcase-sub">We meet you at any point in your day with the drinks you love.</p>
@@ -1067,52 +1144,38 @@
                 <div class="brand-tile"><span>Sprite®</span><a href="#">Explore</a></div>
                 <div class="brand-tile"><span>Diet Coke®</span><a href="#">Explore</a></div>
                 <div class="brand-tile"><span>Powerade®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>Dasani®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>smartwater®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>Minute Maid®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>Simply®</span><a href="#">Explore</a></div>
                 <div class="brand-tile"><span>Costa Coffee®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>Gold Peak®</span><a href="#">Explore</a></div>
                 <div class="brand-tile"><span>BODYARMOR®</span><a href="#">Explore</a></div>
                 <div class="brand-tile"><span>fairlife®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>Topo Chico®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>vitaminwater®</span><a href="#">Explore</a></div>
-                <div class="brand-tile"><span>Schweppes®</span><a href="#">Explore</a></div>
             </div>
             <a href="#" class="btn-red" style="margin-top:3rem;display:inline-block;">Meet the Rest</a>
         </div>
     </section>
 
     <!-- Careers Section -->
-    <section class="careers-section" data-scroll-section>
+    <section class="careers-section" id="careers-section" data-scroll-section>
         <div class="careers-inner">
             <div class="careers-header">
                 <h2>Find Your <span>Future Here</span></h2>
                 <p>We're a team, empowering individuals to grow and work together to make a lasting impact on communities and build a better shared future.</p>
             </div>
             <div class="careers-grid">
-                <div class="career-card" data-scroll data-scroll-speed="-2" style="background-image:url('cinematic-frames/ezgif-frame-100.jpg')">
+                <div class="career-card" data-scroll data-scroll-speed="-2" style="background-image:url('images/unleash-1.webp')">
                     <div class="career-card-overlay"></div>
                     <div class="career-card-content">
                         <h3>Work With Us</h3>
-                        <p>Explore open roles across the globe</p>
-                        <a href="#" class="career-link">Browse Jobs &rarr;</a>
                     </div>
                 </div>
-                <div class="career-card" data-scroll data-scroll-speed="-3" style="background-image:url('cinematic-frames/ezgif-frame-200.jpg')">
+                <div class="career-card" data-scroll data-scroll-speed="-3" style="background-image:url('images/unleash-2.webp')">
                     <div class="career-card-overlay"></div>
                     <div class="career-card-content">
                         <h3>Life at Coca&#8209;Cola</h3>
-                        <p>Discover our culture, benefits &amp; career development</p>
-                        <a href="#" class="career-link">Learn More &rarr;</a>
                     </div>
                 </div>
-                <div class="career-card" data-scroll data-scroll-speed="-2" style="background-image:url('cinematic-frames/ezgif-frame-300.jpg')">
+                <div class="career-card" data-scroll data-scroll-speed="-2" style="background-image:url('images/unleash-3.webp')">
                     <div class="career-card-overlay"></div>
                     <div class="career-card-content">
                         <h3>Early Careers</h3>
-                        <p>Start your journey with internships and graduate programs</p>
-                        <a href="#" class="career-link">Get Started &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -1386,43 +1449,25 @@
                 });
             }
 
-            // Character scramble — resolves left-to-right
-            function scramble(selector, triggerSel, startPos) {
-                const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%';
+            // ── Smooth fade-up with blur for short labels ──
+            function fadeUpBlur(selector, triggerSel, startPos) {
                 document.querySelectorAll(selector).forEach(el => {
-                    const orig = el.textContent.trim();
-                    ScrollTrigger.create({
-                        trigger: triggerSel ? document.querySelector(triggerSel) : el,
-                        start: startPos || 'top 85%',
-                        toggleActions: 'play none none none',
-                        onEnter() {
-                            let f = 0;
-                            const total = orig.length * 5;
-                            const id = setInterval(() => {
-                                el.textContent = orig.split('').map((c, i) => {
-                                    if (/[^A-Za-z0-9]/.test(c)) return c;
-                                    return i * 5 < f ? c : CHARS[Math.floor(Math.random() * CHARS.length)];
-                                }).join('');
-                                if (++f > total) { el.textContent = orig; clearInterval(id); }
-                            }, 38);
+                    gsap.from(el, {
+                        opacity: 0, y: 18, filter: 'blur(6px)',
+                        duration: 0.9, ease: 'power3.out', immediateRender: false,
+                        scrollTrigger: {
+                            trigger: triggerSel ? document.querySelector(triggerSel) : el,
+                            start: startPos || 'top 85%',
+                            toggleActions: 'play none none none',
                         }
                     });
                 });
             }
 
-            // ── Apply word wrapping to all clip-reveal targets ──
-            wrapWords('.statement-quote');
-            wrapWords('.news-header h2');
-            wrapWords('.brands-showcase-heading');
-            wrapWords('.brands-showcase-sub');
-            wrapWords('.careers-header h2');
-            wrapWords('.careers-header p');
-
-            // ── Scramble for short labels ──
-            scramble('.featured-heading',  '.featured-section',        'top 72%');
-            scramble('.link-red',          '.news-section',            'top 72%');
-            scramble('.footer-col h4',     '.site-footer',             'top 90%');
-            scramble('.footer-tagline',    '.site-footer',             'top 90%');
+            fadeUpBlur('.featured-heading', '.featured-section', 'top 72%');
+            fadeUpBlur('.link-red',         '.news-section',     'top 72%');
+            fadeUpBlur('.footer-col h4',    '.site-footer',      'top 90%');
+            fadeUpBlur('.footer-tagline',   '.site-footer',      'top 90%');
 
             // ══════════════════════════════════════════════
             // CINEMATIC SCENE ANIMATIONS
@@ -1437,34 +1482,20 @@
             .from('.statement-quote .clip-inner', { y: '115%', duration: 0.9, stagger: 0.06, ease: 'power3.out' }, '-=0.6')
             .from('.btn-red', { y: 24, opacity: 0, scale: 0.85, duration: 0.9, ease: 'back.out(1.8)' }, '-=0.4');
 
-            // ── SCENE 2: Featured — 3D spiral entrance ──
+            // -- SCENE 2: Featured -- clean cascade from below --
             gsap.timeline({
                 scrollTrigger: { trigger: '.featured-section', start: 'top 68%', toggleActions: 'play none none none' }
             })
-            .from('.featured-heading', { opacity: 0, duration: 0.01 }) // heading reveals via scramble
-            .from('.carousel-btn', { opacity: 0, scale: 0.6, duration: 0.5, stagger: 0.18, ease: 'back.out(2.2)' }, '+=0.2')
+            .from('.carousel-btn', { opacity: 0, scale: 0.7, duration: 0.5, stagger: 0.18, ease: 'back.out(2)', immediateRender: false }, '+=0.1')
             .from('.feature-card', {
-                transformPerspective: 1200,
                 opacity: 0,
-                rotateY: (i) => (i % 2 === 0 ? -145 : 145),
-                rotateX: (i) => (i % 2 === 0 ?   30 : -30),
-                z:       (i) => -(500 + i * 120),
-                y:       (i) => (i % 2 === 0 ?  -90 :  90),
-                scale: 0.45,
-                duration: 1.6,
-                stagger: { each: 0.2, ease: 'power1.in' },
-                ease: 'expo.out'
-            }, '-=0.3')
-            .call(() => {
-                gsap.to('.feature-card', {
-                    transformPerspective: 1200,
-                    rotateY: (i) => (i % 2 === 0 ?  7 : -7),
-                    rotateX: (i) => (i % 2 === 0 ?  4 : -4),
-                    duration: (i) => 2.8 + i * 0.6,
-                    repeat: -1, yoyo: true,
-                    ease: 'sine.inOut', stagger: 0.45
-                });
-            });
+                y: 70,
+                scale: 0.94,
+                duration: 1.1,
+                stagger: { each: 0.14 },
+                ease: 'power3.out',
+                immediateRender: false
+            }, '-=0.3');
 
             // ── SCENE 3: News ──
             gsap.timeline({
@@ -1481,12 +1512,12 @@
             gsap.timeline({
                 scrollTrigger: { trigger: '.brands-showcase-section', start: 'top 68%', toggleActions: 'play none none none' }
             })
-            .from('.brands-showcase-inner', { scale: 0.9, opacity: 0, duration: 1.3, ease: 'power4.out' })
-            .from('.brands-showcase-heading .clip-inner', { y: '115%', duration: 0.85, stagger: 0.07, ease: 'power3.out' }, '-=0.7')
-            .from('.brands-showcase-sub .clip-inner',     { y: '115%', duration: 0.65, stagger: 0.04, ease: 'power2.out' }, '-=0.5')
+            .from('.brands-showcase-heading .clip-inner', { y: '115%', opacity: 0, duration: 0.85, immediateRender: false, stagger: 0.07, ease: 'power3.out' })
+            .from('.brands-showcase-sub .clip-inner',     { y: '115%', opacity: 0, duration: 0.65, immediateRender: false, stagger: 0.04, ease: 'power2.out' }, '-=0.5')
             .from('.brand-tile', {
                 opacity: 0, scale: 0.78, y: 18,
                 duration: 0.65,
+                immediateRender: false,
                 stagger: { each: 0.04, from: 'center', grid: 'auto' },
                 ease: 'back.out(1.5)'
             }, '-=0.3');
@@ -1526,6 +1557,27 @@
         }
 
         window.addEventListener('resize', resizeCanvas);
+
+        // ── Navigation ──────────────────────────────────────────────────────
+        const mainNav     = document.getElementById('main-nav');
+        const hamburger   = document.getElementById('navHamburger');
+
+        // Transparent over hero → solid once scrolled
+        const onNavScroll = () => {
+            mainNav.classList.toggle('scrolled', window.scrollY > 60);
+        };
+        window.addEventListener('scroll', onNavScroll, { passive: true });
+        onNavScroll();
+
+        // Hamburger toggle
+        hamburger.addEventListener('click', () => {
+            mainNav.classList.toggle('menu-open');
+        });
+
+        // Close mobile menu when a link is tapped
+        document.querySelectorAll('.nav-mobile-menu a').forEach(a => {
+            a.addEventListener('click', () => mainNav.classList.remove('menu-open'));
+        });
     </script>
 </body>
 </html>
