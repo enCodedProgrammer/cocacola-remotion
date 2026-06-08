@@ -348,7 +348,7 @@
             animation: fadeIn 1s ease-out 2.5s forwards;
             transition: opacity 0.5s;
         }
-        .scroll-indicator.hidden { opacity: 0; }
+        .scroll-indicator.hidden { opacity: 0 !important; animation: none !important; }
 
         @keyframes fadeIn { to { opacity: 1; } }
 
@@ -513,12 +513,16 @@
         .carousel-btn:hover { background: #b00007; }
 
         /* ── NEWS SECTION ── */
-        .news-section { background: #FFF5E4; padding: 4rem 2rem; overflow: hidden; position: relative; }
+        .news-section { background: rgba(255, 255, 255, 0.82); padding: 4rem 2rem; overflow: hidden; position: relative; min-height: 100vh;}
         .news-inner { max-width: 100%; margin: 0 auto; }
         .news-header {
             display: flex; justify-content: center;
             align-items: flex-end; margin-bottom: 1.5rem;
             gap: 2rem; flex-wrap: wrap; text-align: center;
+        }
+
+        .dive {
+            color: #FFF5E4
         }
         .news-header h2 {
             font-family: 'Playfair Display', serif;
@@ -1029,14 +1033,14 @@
         <div id="remotion-section"></div>
 
 
-    <!-- Statement Section -->
+    <!-- Statement Section 
     <section class="statement-section" id="statement-section" data-scroll-section>
         <div class="statement-inner">
             <div class="statement-bar"></div>
             <p class="statement-quote">"We're refreshing what it means to make a difference: one sip, story and impact at a time."</p>
             <a href="#" class="btn-red">Discover Our Company</a>
         </div>
-    </section>
+    </section> -->
 
     <!-- Featured Stories 
     <section class="featured-section" id="featured-section" data-scroll-section>
@@ -1091,7 +1095,7 @@
     <section class="news-section" id="news-section" data-scroll-section>
         <div class="news-inner">
             <div class="news-header">
-                <h2>Dive Into Our<br><span>Latest News</span></h2>
+                <h2 class="dive">Dive Into Our<br><span>Latest News</span></h2>
             </div>
             <div class="news-portrait-grid">
                 <a class="news-portrait-card" href="#">
@@ -1138,7 +1142,15 @@
         </div>
     </section>
 
-    <!-- Brands Showcase -->
+
+
+        <!-- ═══ REMOTION SCROLL SECTION ═══ -->
+    <div id="remotion-section"></div>
+
+    <!-- ═══ LUXURY AD SECTION ═══ -->
+    <div id="luxury-section"></div>
+
+    <!-- Brands Showcase --
     <section class="brands-showcase-section" id="brands-section" data-scroll-section>
         <div class="brands-showcase-inner">
             <h2 class="brands-showcase-heading">Say Hello to <span>the Team</span></h2>
@@ -1155,7 +1167,7 @@
             </div>
             <a href="#" class="btn-red" style="margin-top:3rem;display:inline-block;">Meet the Rest</a>
         </div>
-    </section>
+    </section> -->
 
     <!-- Careers Section -->
     <section class="careers-section" id="careers-section" data-scroll-section>
@@ -1189,8 +1201,7 @@
 
 
 
-    <!-- ═══ REMOTION SCROLL SECTION ═══ -->
-    <div id="remotion-section"></div>
+
 
     <!-- Footer -->
     <footer class="site-footer" data-scroll-section>
@@ -1382,14 +1393,16 @@
                 onUpdate: () => render()
             });
 
-            // Hide scroll indicator
-            ScrollTrigger.create({
-                trigger: '.hero-wrapper',
-                start: 'top top',
-                end: '5% top',
-                onEnter:     () => scrollIndicator.classList.add('hidden'),
-                onLeaveBack: () => scrollIndicator.classList.remove('hidden')
-            });
+            // Scroll indicator: hide while scrolling, reappear 2s after scroll stops
+            let scrollIdleTimer = null;
+            const hideIndicator = () => {
+                scrollIndicator.classList.add('hidden');
+                clearTimeout(scrollIdleTimer);
+                scrollIdleTimer = setTimeout(() => {
+                    scrollIndicator.classList.remove('hidden');
+                }, 2000);
+            };
+            window.addEventListener('scroll', hideIndicator, { passive: true });
 
             // Fade hero veil
             gsap.to('.hero-veil', {
@@ -1567,13 +1580,16 @@
         const mainNav     = document.getElementById('main-nav');
         const hamburger   = document.getElementById('navHamburger');
 
-        // Transparent over hero → solid once Statement section is reached
-        const statementSection = document.getElementById('statement-section');
+        // Transparent while inside hero or remotion section, solid everywhere else
+        const heroWrapper    = document.querySelector('.hero-wrapper');
+        const remotionEl     = document.getElementById('remotion-section');
         const onNavScroll = () => {
-            const threshold = statementSection
-                ? statementSection.getBoundingClientRect().top + window.scrollY - 10
-                : 60;
-            mainNav.classList.toggle('scrolled', window.scrollY >= threshold);
+            const heroBottom     = heroWrapper ? heroWrapper.getBoundingClientRect().top + window.scrollY + heroWrapper.offsetHeight : 60;
+            const remotionTop    = remotionEl  ? remotionEl.getBoundingClientRect().top  + window.scrollY : Infinity;
+            const remotionBottom = remotionEl  ? remotionTop + remotionEl.offsetHeight : Infinity;
+            const inHero     = window.scrollY < heroBottom;
+            const inRemotion = window.scrollY >= remotionTop && window.scrollY < remotionBottom;
+            mainNav.classList.toggle('scrolled', !inHero && !inRemotion);
         };
         window.addEventListener('scroll', onNavScroll, { passive: true });
         onNavScroll();

@@ -2,6 +2,7 @@ import React from "react";
 import { Composition } from "remotion";
 import { CocaColaComposition }       from "./Composition";
 import { CocaColaCompositionMobile } from "./CompositionMobile";
+import { LuxuryComposition }         from "./LuxuryComposition";
 
 export const Root: React.FC = () => {
   return (
@@ -24,6 +25,16 @@ export const Root: React.FC = () => {
         durationInFrames={375}
         width={1080}
         height={1920}
+        fps={30}
+        defaultProps={{}}
+      />
+      {/* Luxury product advertisement — 15s, 1920×1080 */}
+      <Composition
+        id="CocaColaLuxury"
+        component={LuxuryComposition}
+        durationInFrames={478}
+        width={1920}
+        height={1080}
         fps={30}
         defaultProps={{}}
       />
